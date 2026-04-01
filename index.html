@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skywork · Workspace 原型 v7</title>
+
+
+
+<style>
+:root{--bg-main1:#F7F8FA;--bg-main2:#EDEEF0;--bg-overlay:rgba(0,8,24,0.4);--surface-1:#FFFFFF;--surface-2:#F7F8FA;--text-1:#000818;--text-2:#333B46;--text-3:#666F7E;--text-4:#939BAA;--brand-blue:#3385FF;--brand-blue-hover:#2970E8;--brand-blue-light:#E8F1FF;--brand-blue-50:#EEF5FF;--line-1:#EDEFF1;--line-2:#DDE0E4;--line-focus:#000818;--success:#00C853;--success-bg:#F0FFF5;--warning:#FAAE15;--warning-bg:#FFFBF0;--sidebar-w:220px;--topbar-h:48px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',Arial,sans-serif;background:var(--bg-main1);color:var(--text-2);font-size:14px;line-height:1.5;height:100%;display:flex;flex-direction:column;overflow:hidden;min-height:600px}
+.web-topbar{height:var(--topbar-h);background:var(--surface-1);border-bottom:1px solid var(--line-1);display:flex;align-items:center;padding:0 20px 0 0;flex-shrink:0;z-index:100}
+.topbar-logo-area{width:var(--sidebar-w);padding:0 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;border-right:1px solid var(--line-1);height:100%}
+.logo-mark{width:26px;height:26px;background:var(--text-1);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{color:#fff}
+.logo-name{font-size:15px;font-weight:500;color:var(--text-1);letter-spacing:-0.2px}
+.topbar-center{flex:1;padding:0 20px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-icon-btn{width:32px;height:32px;border-radius:8px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3);position:relative;transition:background 0.12s}
+.topbar-icon-btn:hover{background:var(--bg-main1)}
+.notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:200px;background:#FF4D4F;border:1.5px solid var(--surface-1)}
+.plan-badge{font-size:11px;font-weight:600;color:#FF6B00;background:#FFF3E8;border:1px solid #FFD9B3;border-radius:5px;padding:2px 7px;letter-spacing:0.2px}
+.upgrade-btn{font-size:12px;font-weight:500;color:var(--text-3);padding:5px 12px;border:1px solid var(--line-2);border-radius:7px;background:transparent;cursor:pointer;transition:all 0.12s}
+.upgrade-btn:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
+.topbar-divider{width:1px;height:18px;background:var(--line-2)}
+.user-avatar-top{width:28px;height:28px;border-radius:200px;background:var(--brand-blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;cursor:pointer;flex-shrink:0}
+.user-name-top{font-size:13px;font-weight:500;color:var(--text-2);cursor:pointer}
+.body-row{flex:1;display:flex;overflow:hidden}
+.sidebar{width:var(--sidebar-w);background:var(--surface-1);border-right:1px solid var(--line-1);display:flex;flex-direction:column;height:100%;flex-shrink:0;overflow:hidden}
+.new-project-btn{display:flex;align-items:center;gap:8px;margin:12px 12px 8px;padding:8px 16px;background:var(--brand-blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;width:calc(100% - 24px)}
+.nav-section{padding:4px 8px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;font-size:14px;color:var(--text-4);cursor:default}
+.sidebar-divider{height:1px;background:var(--line-1);margin:8px 16px}
+.project-list{flex:1;overflow-y:auto;padding:0 8px 8px}
+.ws-section-header-row{display:flex;align-items:center;padding:0 8px;margin-bottom:4px;height:24px}
+.ws-ungrouped-label{font-size:11px;font-weight:500;color:var(--text-4);letter-spacing:0.3px;flex:1}
+.ws-icon-add-btn{width:18px;height:18px;border-radius:4px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-4);transition:background 0.12s,color 0.12s}
+.ws-icon-add-btn:hover{background:var(--brand-blue-50);color:var(--brand-blue)}
+.ws-nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;cursor:pointer;transition:background 0.12s;margin:1px 0}
+.ws-nav-item:hover{background:var(--bg-main1)}
+.ws-nav-item.active{background:var(--brand-blue-50)}
+.ws-nav-name{font-size:13px;color:var(--text-3);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws-nav-item.active .ws-nav-name{color:var(--brand-blue);font-weight:500}
+.ws-nav-count{font-size:10px;font-weight:500;background:var(--bg-main2);color:var(--text-4);border-radius:4px;padding:1px 5px}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.view{display:none;flex:1;flex-direction:column;overflow:hidden}
+.view.active{display:flex}
+.wsd-view{background:var(--bg-main1)}
+.wsd-topbar{padding:12px 24px;display:flex;align-items:center;gap:12px;flex-shrink:0;background:var(--surface-1);border-bottom:1px solid var(--line-1)}
+.wsd-icon{width:32px;height:32px;border-radius:9px;border:1px solid var(--line-1);background:var(--bg-main1);display:flex;align-items:center;justify-content:center;color:var(--text-3)}
+.wsd-name{font-size:15px;font-weight:500;color:var(--text-1)}
+.wsd-sub{font-size:12px;color:var(--text-4);margin-top:1px}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line-1);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3)}
+.wsd-body{flex:1;display:flex;overflow:hidden}
+.wsd-left{flex:1;overflow-y:auto;padding:20px 24px;border-right:1px solid var(--line-1)}
+.wsd-left::-webkit-scrollbar{width:3px}
+.wsd-left::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:200px}
+.input-box{background:var(--surface-1);border:1px solid var(--line-1);border-radius:16px;padding:16px 16px 12px;box-shadow:0 2px 8px rgba(0,8,24,0.06);margin-bottom:16px}
+.input-textarea{width:100%;border:none;outline:none;font-family:inherit;font-size:15px;color:var(--text-2);resize:none;background:transparent;min-height:56px;line-height:1.6}
+.input-textarea::placeholder{color:var(--text-4)}
+.input-actions{display:flex;align-items:center;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-1)}
+.input-action-btn{display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;border:1px solid var(--line-1);background:transparent;font-size:13px;font-family:inherit;color:var(--text-3);cursor:pointer}
+.input-right-group{margin-left:auto;display:flex;align-items:center;gap:6px}
+.mode-switcher{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-1);background:var(--surface-2);font-size:12px;color:var(--text-3)}
+.send-btn{width:32px;height:32px;border-radius:8px;background:var(--brand-blue);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff}
+.input-ws-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line-1);background:transparent;font-size:12px;font-family:inherit;color:var(--text-3);cursor:pointer;transition:all 0.12s}
+.input-ws-btn:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
+.biz-empty{border:1.5px dashed var(--line-2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:20px;transition:border-color 0.15s,background 0.15s}
+.biz-empty:hover{border-color:var(--brand-blue);background:var(--brand-blue-50)}
+.biz-empty-title{font-size:13px;font-weight:500;color:var(--text-3)}
+.biz-empty:hover .biz-empty-title{color:var(--brand-blue)}
+.biz-empty-sub{font-size:12px;color:var(--text-4)}
+.proj-list{display:flex;flex-direction:column;gap:6px}
+.proj-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-1);border:1px solid var(--line-1);border-radius:12px;cursor:pointer;transition:border-color 0.15s}
+.proj-item:hover{border-color:var(--line-2)}
+.proj-dot{width:8px;height:8px;border-radius:200px;flex-shrink:0}
+.proj-info{flex:1;min-width:0}
+.proj-name{font-size:14px;font-weight:500;color:var(--text-2)}
+.proj-meta{font-size:12px;color:var(--text-4);margin-top:2px}
+.proj-status-tag{font-size:10px;font-weight:500;padding:2px 8px;border-radius:4px;flex-shrink:0;white-space:nowrap}
+.proj-status-tag.running{background:#EEF5FF;color:var(--brand-blue)}
+.proj-status-tag.done{background:var(--success-bg);color:var(--success)}
+.proj-status-tag.paused{background:var(--bg-main2);color:var(--text-4)}
+.proj-mode-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;flex-shrink:0}
+.proj-mode-free{background:var(--bg-main2);color:var(--text-4)}
+.proj-mode-pro{background:#F0F4FF;color:#3B5BDB}
+.main-tab-block{background:var(--surface-1);border:1px solid var(--line-1);border-radius:14px;overflow:hidden;margin-bottom:4px}
+.main-tab-bar{display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--line-1);gap:0;min-height:40px}
+.main-tab{font-size:13px;font-weight:500;color:var(--text-4);border:none;background:transparent;padding:10px 12px;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.12s,border-color 0.12s;white-space:nowrap}
+.main-tab.active{color:var(--text-1);border-bottom-color:var(--text-1)}
+.main-tab:hover:not(.active){color:var(--text-2)}
+.out-filter-row{display:flex;gap:4px;margin-left:auto}
+.out-filter{font-size:11px;padding:3px 9px;border-radius:5px;cursor:pointer;color:var(--text-4);border:none;background:transparent;font-family:inherit;transition:all 0.12s}
+.out-filter.active{background:var(--brand-blue-50);color:var(--brand-blue);font-weight:500}
+.main-tab-panel{display:none;padding:8px 4px}
+.main-tab-panel.active{display:block}
+.tab-empty{padding:36px 20px;text-align:center}
+.tab-empty-icon{font-size:28px;margin-bottom:10px}
+.tab-empty-title{font-size:14px;font-weight:500;color:var(--text-3);margin-bottom:4px}
+.tab-empty-sub{font-size:12px;color:var(--text-4);line-height:1.7}
+.out-list-header{display:flex;align-items:center;padding:6px 12px;font-size:11px;font-weight:500;color:var(--text-4);gap:10px;border-bottom:1px solid var(--line-1)}
+.out-col-type{width:54px;flex-shrink:0;font-size:11px;color:var(--text-4)}
+.out-col-time{width:72px;flex-shrink:0;font-size:11px;color:var(--text-4)}
+.out-col-op{width:36px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end}
+.out-item{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:background 0.12s;border-bottom:1px solid var(--line-1)}
+.out-item:last-child{border-bottom:none}
+.out-item:hover{background:var(--bg-main1)}
+.out-name{font-size:13px;font-weight:500;color:var(--text-2)}
+.out-meta{font-size:11px;color:var(--text-4)}
+.out-more-btn{width:24px;height:24px;border-radius:6px;border:none;background:transparent;font-size:14px;color:var(--text-4);cursor:pointer;display:flex;align-items:center;justify-content:center;letter-spacing:1px;line-height:1;transition:background 0.12s}
+.out-more-btn:hover{background:var(--bg-main2);color:var(--text-2)}
+.out-menu{display:none;position:absolute;right:0;top:28px;background:var(--surface-1);border:1px solid var(--line-2);border-radius:10px;box-shadow:0 8px 24px rgba(0,8,24,0.12);z-index:200;min-width:168px;padding:4px;overflow:hidden}
+.out-menu.open{display:block;animation:fadeIn 0.15s ease}
+.out-menu-item{padding:8px 12px;font-size:13px;color:var(--text-2);border-radius:7px;cursor:pointer;transition:background 0.1s;white-space:nowrap}
+.out-menu-item:hover{background:var(--bg-main1)}
+.out-menu-item.danger{color:#E8392A}
+.out-menu-item.danger:hover{background:#FFF2F0}
+.wsd-right{width:272px;flex-shrink:0;overflow-y:auto}
+.wsd-right::-webkit-scrollbar{width:3px}
+.wsd-right::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:200px}
+.rc{background:var(--surface-1);border-bottom:1px solid var(--line-1)}
+.rc.memory-rc{background:linear-gradient(135deg,#F2F8FF,#EEF5FF);border-bottom-color:var(--brand-blue-light)}
+.rc.warn-rc{background:var(--warning-bg);border-bottom-color:rgba(250,174,21,0.3)}
+.rc-head{display:flex;align-items:center;padding:12px 16px;gap:8px}
+.rc-title{font-size:14px;font-weight:500;color:var(--text-1);flex:1}
+.rc-action{display:flex;align-items:center;gap:6px}
+.rc-link{font-size:12px;color:var(--brand-blue);cursor:pointer;font-weight:500;white-space:nowrap}
+.rc-link:hover{opacity:0.8}
+.rc-plus{width:22px;height:22px;border-radius:200px;border:1px solid var(--line-2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-4);transition:border-color 0.12s,color 0.12s,background 0.12s}
+.rc-plus:hover{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-blue-50)}
+.rc-body{padding:0 16px 14px}
+.mem-empty-hint{font-size:12px;color:var(--text-4);line-height:1.7;padding:2px 0 4px}
+.mem-auto-hint{font-size:11px;color:var(--brand-blue);opacity:0.65;margin-top:4px}
+.mem-list{display:flex;flex-direction:column;gap:8px}
+.mem-item{display:flex;gap:8px}
+.mem-dot{width:5px;height:5px;border-radius:200px;background:var(--brand-blue);opacity:0.5;flex-shrink:0;margin-top:6px}
+.mem-text{font-size:13px;color:var(--text-2);line-height:1.6}
+.mem-auto{font-size:11px;color:var(--text-4);margin-top:8px;padding-top:8px;border-top:1px solid rgba(51,133,255,0.15)}
+.instr-guide{background:rgba(250,174,21,0.12);border:1px solid #FDEEA0;border-radius:8px;padding:10px 12px;font-size:12px;color:#7A5500;line-height:1.6}
+.instr-text{font-size:13px;color:var(--text-2);line-height:1.7}
+.ref-empty-hint{font-size:12px;color:var(--text-4);line-height:1.6;padding:2px 0 4px}
+.ref-file{display:flex;align-items:center;gap:8px;padding:5px 4px;border-radius:6px;font-size:13px;color:var(--text-2);cursor:pointer;transition:background 0.12s}
+.ref-file:hover{background:var(--bg-main1)}
+.ref-del-btn{width:20px;height:20px;border-radius:5px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-4);opacity:0;transition:opacity 0.12s,background 0.12s;flex-shrink:0}
+.ref-file:hover .ref-del-btn{opacity:1}
+.ref-del-btn:hover{background:var(--bg-main2);color:#FF4D4F}
+.cron-empty-hint{font-size:12px;color:var(--text-4);line-height:1.6;padding:2px 0}
+.cron-list{display:flex;flex-direction:column;gap:10px}
+.cron-row{display:flex;align-items:center;gap:8px}
+.cron-dot{width:6px;height:6px;border-radius:200px;background:var(--success);flex-shrink:0}
+.cron-dot.paused{background:var(--text-4)}
+.cron-info{flex:1}
+.cron-name{font-size:13px;font-weight:500;color:var(--text-2)}
+.cron-meta{font-size:11px;color:var(--text-4);margin-top:1px}
+.cron-status-tag{font-size:10px;font-weight:500;padding:1px 6px;border-radius:4px;flex-shrink:0}
+.cron-status-tag.running{background:#EEF5FF;color:var(--brand-blue)}
+.cron-status-tag.paused{background:var(--bg-main2);color:var(--text-4)}
+.ws-options-menu{display:none;position:absolute;right:0;top:36px;background:var(--surface-1);border:1px solid var(--line-2);border-radius:10px;box-shadow:0 8px 24px rgba(0,8,24,0.12);z-index:300;min-width:148px;padding:4px}
+.ws-options-menu.open{display:block;animation:fadeIn 0.15s ease}
+.ws-options-item{padding:8px 12px;font-size:13px;color:var(--text-2);border-radius:7px;cursor:pointer;transition:background 0.1s;white-space:nowrap}
+.ws-options-item:hover{background:var(--bg-main1)}
+.ws-options-item.danger{color:#E8392A}
+.ws-options-item.danger:hover{background:#FFF2F0}
+.wsd-topbar-actions{position:relative}
+.modal-overlay{display:none;position:fixed;inset:0;background:var(--bg-overlay);z-index:500;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-box{background:var(--surface-1);border-radius:20px;width:100%;max-width:480px;padding:28px;box-shadow:0 24px 64px rgba(0,8,24,0.18);animation:slideUp 0.2s ease}
+.modal-box.sm{max-width:420px}
+.modal-title{font-size:16px;font-weight:500;color:var(--text-1);margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--text-4);margin-bottom:20px;line-height:1.6}
+.modal-field{margin-bottom:16px}
+.modal-label{font-size:12px;font-weight:500;color:var(--text-3);margin-bottom:6px;display:block}
+.modal-opt{font-size:11px;color:var(--text-4);font-weight:400;margin-left:3px}
+.modal-input{width:100%;border:1px solid var(--line-2);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;color:var(--text-2);outline:none;transition:border-color 0.15s}
+.modal-input:focus{border-color:var(--line-focus)}
+.modal-input::placeholder{color:var(--text-4)}
+.modal-input.error{border-color:#FF4D4F;background:#FFF5F5}
+.field-error{font-size:11px;color:#FF4D4F;margin-top:5px;display:none;line-height:1.5}
+.field-error.show{display:block}
+.modal-textarea{width:100%;border:1px solid var(--line-2);border-radius:10px;padding:10px 14px;font-size:13px;font-family:inherit;color:var(--text-2);outline:none;resize:none;min-height:90px;line-height:1.7;transition:border-color 0.15s}
+.modal-textarea:focus{border-color:var(--line-focus)}
+.modal-textarea::placeholder{color:var(--text-4)}
+.modal-hint{font-size:11px;color:var(--text-4);margin-top:6px;line-height:1.6}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:24px}
+.btn-cancel{padding:8px 18px;border-radius:8px;border:1px solid var(--line-1);background:transparent;font-size:14px;font-family:inherit;color:var(--text-3);cursor:pointer}
+.btn-cancel:hover{background:var(--bg-main1)}
+.btn-primary{padding:8px 20px;border-radius:8px;background:var(--brand-blue);color:#fff;border:none;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer}
+.btn-primary:hover{background:var(--brand-blue-hover)}
+.btn-danger{padding:8px 18px;border-radius:8px;background:#FF4D4F;color:#fff;border:none;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer}
+.btn-danger:hover{background:#E8392A}
+.instr-modal-hint{font-size:12px;color:var(--brand-blue);margin-top:8px;line-height:1.6;padding:8px 12px;background:var(--brand-blue-50);border-radius:8px}
+.mem-modal{background:var(--surface-1);border-radius:20px;width:100%;max-width:500px;overflow:hidden;box-shadow:0 24px 64px rgba(0,8,24,0.18);animation:slideUp 0.2s ease;position:relative}
+.mem-modal-header{padding:24px 24px 16px;border-bottom:1px solid var(--line-1)}
+.mem-modal-title{font-size:17px;font-weight:600;color:var(--text-1);margin-bottom:6px}
+.mem-modal-desc{font-size:13px;color:var(--text-3);line-height:1.6}
+.mem-modal-close{position:absolute;top:20px;right:20px;width:28px;height:28px;border-radius:8px;border:1px solid var(--line-1);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3)}
+.mem-modal-close:hover{background:var(--bg-main1)}
+.mem-modal-list{padding:8px 24px;max-height:220px;overflow-y:auto}
+.mem-modal-entry{font-size:14px;color:var(--text-2);line-height:1.7;padding:10px 0;border-bottom:1px solid var(--line-1)}
+.mem-modal-entry:last-child{border-bottom:none}
+.mem-modal-empty{padding:24px;text-align:center;font-size:13px;color:var(--text-4);line-height:1.7}
+.mem-modal-input-area{padding:12px 16px 16px;border-top:1px solid var(--line-1)}
+.mem-modal-wrap{background:var(--surface-2);border:1px solid var(--line-1);border-radius:12px;padding:10px 12px 8px;transition:border-color 0.15s}
+.mem-modal-wrap:focus-within{border-color:var(--line-focus)}
+.mem-modal-ta{width:100%;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text-2);resize:none;background:transparent;min-height:48px;line-height:1.5}
+.mem-modal-ta::placeholder{color:var(--text-4)}
+.mem-modal-row{display:flex;align-items:center;justify-content:flex-end;margin-top:8px}
+.mem-send{width:28px;height:28px;border-radius:8px;background:var(--brand-blue);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff}
+.mem-send:hover{background:var(--brand-blue-hover)}
+.file-zone{border:1.5px dashed var(--line-2);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all 0.15s;margin-bottom:12px}
+.file-zone:hover{border-color:var(--brand-blue);background:var(--brand-blue-50)}
+.file-zone-icon{font-size:24px;margin-bottom:8px}
+.file-zone-text{font-size:13px;font-weight:500;color:var(--text-3)}
+.file-zone-sub{font-size:12px;color:var(--text-4);margin-top:4px}
+.freq-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.freq-chip{padding:6px 14px;border-radius:200px;border:1px solid var(--line-1);background:var(--surface-2);font-size:12px;color:var(--text-3);cursor:pointer;font-family:inherit;transition:all 0.12s}
+.freq-chip.sel{border-color:var(--brand-blue);background:var(--brand-blue-50);color:var(--brand-blue);font-weight:500}
+.modal-select-wrap{position:relative}
+.modal-select{width:100%;padding:9px 12px;border:1px solid var(--line-2);border-radius:9px;font-family:inherit;font-size:14px;color:var(--text-2);background:var(--surface-1);appearance:none;cursor:pointer;outline:none}
+.modal-select:focus{border-color:var(--line-focus)}
+.breadcrumb{display:flex;align-items:center;gap:6px}
+.breadcrumb-ws{font-size:14px;color:var(--brand-blue);background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-weight:500;transition:opacity 0.12s}
+.breadcrumb-ws:hover{opacity:0.75}
+.breadcrumb-proj{font-size:14px;color:var(--text-2);font-weight:500}
+.proj-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-4)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--text-1);color:#fff;font-size:13px;padding:10px 20px;border-radius:200px;opacity:0;transition:all 0.25s;z-index:1000;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<!-- Memory Modal -->
+<div class="modal-overlay" id="modal-memory">
+  <div class="mem-modal">
+    <button class="mem-modal-close" onclick="closeModal('modal-memory')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="mem-modal-header">
+      <div class="mem-modal-title">管理 Workspace Memory</div>
+      <div class="mem-modal-desc">Agent 会在每次对话后自动更新 Memory。你也可以在这里告诉 Agent 需要增加或修改的内容。</div>
+    </div>
+    <div class="mem-modal-list" id="mem-list-filled">
+      <div style="font-size:14px;color:var(--text-2);line-height:1.8;white-space:pre-wrap;padding:4px 0">用户偏好小红书护肤赛道，重点关注成分党内容方向。发布频率定为每周 3 篇，周二、四、六为主。内容形式以图文为主，不出镜。用户对竞品分析有持续需求，关注成分党头部账号动态。</div>
+    </div>
+    <div class="mem-modal-input-area">
+      <div class="mem-modal-wrap">
+        <textarea class="mem-modal-ta" id="mem-input-filled" placeholder="告诉 Agent 你想修正或补充什么，它会帮你更新 Memory…"></textarea>
+        <div class="mem-modal-row"><button class="mem-send" onclick="submitMemory('filled')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Workspace 删除确认 -->
+<div class="modal-overlay" id="modal-ws-delete">
+  <div class="modal-box sm">
+    <div class="modal-title">删除 Workspace？</div>
+    <div style="margin-bottom:20px">
+      <div style="font-size:13px;color:var(--text-3);margin-bottom:14px;line-height:1.6">此操作<strong style="color:var(--text-1)">不可撤销</strong>，请确认以下内容的处理方式：</div>
+      <div style="background:#FFF5F5;border:1px solid #FFD6D6;border-radius:10px;padding:12px 14px;margin-bottom:8px">
+        <div style="font-size:11px;font-weight:600;color:#E8392A;letter-spacing:0.3px;margin-bottom:6px">🗑 永久删除</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7">Memory · 指令 · 参考文件 · 业务视图</div>
+      </div>
+      <div style="background:var(--bg-main1);border:1px solid var(--line-1);border-radius:10px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:600;color:var(--text-4);letter-spacing:0.3px;margin-bottom:6px">🔗 保留，但解除与此 Workspace 的关联</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7">Projects · 输出物 · 定时任务</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-ws-delete')">取消</button>
+      <button class="btn-danger" onclick="confirmDeleteWorkspace()">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- 新建 Workspace -->
+<div class="modal-overlay" id="modal-new-ws">
+  <div class="modal-box">
+    <div class="modal-title">新建 Workspace</div>
+    <div class="modal-sub">创建一个持久工作环境，让 Agent 记住你的背景与规则</div>
+    <div class="modal-field">
+      <label class="modal-label">名称 <span style="color:#FF4D4F">*</span></label>
+      <input class="modal-input" id="ws-name-input" placeholder="如：自媒体工作台、产品研究、客户服务…" maxlength="40" oninput="clearFieldError('ws-name-error','ws-name-input')"/>
+      <div class="field-error" id="ws-name-error"></div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">指令 <span class="modal-opt">（可选）</span></label>
+      <textarea class="modal-textarea" id="ws-instr-input" placeholder="告诉 Agent 在此 Workspace 中如何工作，例如：&#10;你是我的自媒体运营助手，所有内容以小红书图文为主，语气活泼，每次给出 3 个备选方案。"></textarea>
+      <div class="modal-hint">创建后也可以随时修改</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-new-ws')">取消</button>
+      <button class="btn-primary" onclick="createWorkspace()">创建 Workspace</button>
+    </div>
+  </div>
+</div>
+
+<!-- 编辑指令 -->
+<div class="modal-overlay" id="modal-instr">
+  <div class="modal-box">
+    <div class="modal-title">编辑指令</div>
+    <div class="modal-sub" style="margin-bottom:16px">设定 Agent 在此 Workspace 中的角色与工作方式</div>
+    <textarea class="modal-textarea" style="min-height:120px" placeholder="例如：你是我的自媒体运营助手，专注护肤赛道成分党内容，回答简洁实用，每次给出 3 个备选方向…"></textarea>
+    <div class="instr-modal-hint">✦ 此指令在该 Workspace 的所有对话中自动生效，无需每次重复交代</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-instr')">取消</button>
+      <button class="btn-primary" onclick="saveInstr()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 上传参考文件 -->
+<div class="modal-overlay" id="modal-file">
+  <div class="modal-box sm">
+    <div class="modal-title">添加参考文件</div>
+    <div class="modal-sub" style="margin-bottom:16px">上传后，此 Workspace 中所有对话均可引用，无需重复上传</div>
+    <div class="file-zone" onclick="doFileUpload()">
+      <div class="file-zone-icon">📁</div>
+      <div class="file-zone-text">点击上传或拖拽文件到此处</div>
+      <div class="file-zone-sub">支持 PDF、Word、Excel、图片等，单文件最大 50MB</div>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modal-file')">关闭</button></div>
+  </div>
+</div>
+
+<!-- 新建定时任务 -->
+<div class="modal-overlay" id="modal-cron">
+  <div class="modal-box">
+    <div class="modal-title">新建定时任务</div>
+    <div class="modal-field">
+      <label class="modal-label">任务名称 <span style="color:#FF4D4F">*</span></label>
+      <input class="modal-input" id="cron-name-input" placeholder="例如：小红书热点日报"/>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">执行指令 <span style="color:#FF4D4F">*</span></label>
+      <textarea class="modal-textarea" style="min-height:80px" placeholder="给 AI 的具体执行指令"></textarea>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">关联工作台</label>
+      <div class="modal-select-wrap">
+        <select class="modal-select"><option>不关联</option><option selected>自媒体工作台</option></select>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-4)"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">IM 通知渠道</label>
+      <div class="freq-row">
+        <button class="freq-chip" onclick="selChip(this)">💬 WhatsApp</button>
+        <button class="freq-chip" onclick="selChip(this)">✈️ Telegram</button>
+        <button class="freq-chip" onclick="selChip(this)">🎮 Discord</button>
+        <button class="freq-chip" onclick="selChip(this)"># Slack</button>
+        <button class="freq-chip" onclick="selChip(this)">🪶 飞书</button>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">重复</label>
+      <div class="freq-row">
+        <button class="freq-chip sel" onclick="selFreq(this)">每天</button>
+        <button class="freq-chip" onclick="selFreq(this)">每周</button>
+        <button class="freq-chip" onclick="selFreq(this)">每月</button>
+        <button class="freq-chip" onclick="selFreq(this)">自定义</button>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">执行时间</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <select class="modal-select" style="width:80px"><option>09</option><option>10</option><option>11</option></select>
+        <span style="color:var(--text-3);font-weight:500">:</span>
+        <select class="modal-select" style="width:80px"><option>00</option><option>30</option></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-cron')">取消</button>
+      <button class="btn-primary" onclick="saveCron()">创建</button>
+    </div>
+  </div>
+</div>
+
+<!-- 参考文件删除确认 -->
+<div class="modal-overlay" id="modal-ref-delete">
+  <div class="modal-box sm">
+    <div class="modal-title">移除参考文件</div>
+    <div class="modal-sub" style="margin-bottom:24px">移除后，此文件将不再被当前 Workspace 的对话引用</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-ref-delete')">取消</button>
+      <button class="btn-primary" style="background:#FF4D4F" onclick="closeModal('modal-ref-delete');showToast('已移除 ✓')">确认移除</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="web-topbar">
+  <div class="topbar-logo-area">
+    <div class="logo-mark"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <span class="logo-name">Skywork</span>
+  </div>
+  <div class="topbar-center"></div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn"><div class="notif-dot"></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+    <button class="topbar-icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+    <div class="topbar-divider"></div>
+    <span class="plan-badge">Ultra</span>
+    <button class="upgrade-btn">升级</button>
+    <div class="topbar-divider"></div>
+    <div class="user-avatar-top">W</div>
+    <span class="user-name-top">Wendy</span>
+  </div>
+</div>
+
+<div class="body-row">
+<div class="sidebar">
+  <button class="new-project-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> New Project</button>
+  <div class="nav-section">
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Skills</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Knowledge Base</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 定时任务</div>
+    <div class="nav-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg> Dispatch</div>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="project-list">
+    <div class="ws-section-header-row">
+      <span class="ws-ungrouped-label">Workspace</span>
+      <button class="ws-icon-add-btn" onclick="openModal('modal-new-ws')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+    </div>
+    <div class="ws-nav-item" id="nav-new-ws" style="display:none" onclick="switchView('view-new-ws')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--text-4)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="ws-nav-name" id="nav-new-ws-name">新 Workspace</span>
+      <span class="ws-nav-count">0</span>
+    </div>
+    <div class="ws-nav-item active" id="nav-filled-ws" onclick="switchView('view-filled-ws')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--text-4)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="ws-nav-name">自媒体工作台</span>
+      <span class="ws-nav-count">3</span>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-size:11px;font-weight:500;color:var(--text-4);padding:4px 8px 6px;letter-spacing:0.3px">Recent Projects</div>
+      <div style="padding:7px 8px;font-size:13px;color:var(--text-4);display:flex;align-items:center;gap:8px"><span style="flex:1">自媒体运营</span><span style="font-size:10px;padding:1px 6px;border-radius:4px;background:#EEF5FF;color:var(--brand-blue);font-weight:500">运行中</span></div>
+      <div style="padding:7px 8px;font-size:13px;color:var(--text-4)">竞品分析报告</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 空状态 -->
+  <div class="view wsd-view" id="view-new-ws">
+    <div class="wsd-topbar">
+      <div class="wsd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <div><div class="wsd-name" id="new-ws-title">新 Workspace</div><div class="wsd-sub">刚刚创建 · 0 个 Project</div></div>
+      <div style="margin-left:auto"><button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button></div>
+    </div>
+    <div class="wsd-body">
+      <div class="wsd-left">
+        <div class="input-box">
+          <textarea class="input-textarea" placeholder="在此 Workspace 中发起新任务…" rows="3"></textarea>
+          <div class="input-actions">
+            <button class="input-action-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <button class="input-action-btn">技能</button>
+            <button class="input-action-btn">基础模型</button>
+            <button class="input-ws-btn" id="new-ws-action-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#F5A623"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <span id="new-ws-btn-name">新 Workspace</span>
+            </button>
+            <div class="input-right-group">
+              <div class="mode-switcher"><span>⚡</span><span style="font-weight:500;margin-left:2px;font-size:12px">Free Mode</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></div>
+              <button class="send-btn" onclick="launchProject(document.getElementById('new-ws-title').textContent, document.querySelector('#view-new-ws .input-textarea').value)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="biz-empty">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <div><div class="biz-empty-title">+ 添加业务视图</div><div class="biz-empty-sub">让 Agent 为你生成专属看板</div></div>
+        </div>
+        <div class="main-tab-block">
+          <div class="main-tab-bar">
+            <button class="main-tab active" onclick="switchNewWsTab('new-tab-projects')">Recent Projects</button>
+            <button class="main-tab" onclick="switchNewWsTab('new-tab-outputs')">输出物</button>
+          </div>
+          <div class="main-tab-panel active" id="new-tab-projects">
+            <div class="tab-empty"><div class="tab-empty-icon">💬</div><div class="tab-empty-title">还没有 Project</div><div class="tab-empty-sub">在上方发起第一个任务<br>Agent 会自动创建对应 Project</div></div>
+          </div>
+          <div class="main-tab-panel" id="new-tab-outputs">
+            <div class="tab-empty"><div class="tab-empty-icon">📂</div><div class="tab-empty-title">还没有输出物</div><div class="tab-empty-sub">Agent 完成任务后生成的文档、表格、图片<br>会自动汇聚到这里</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="wsd-right">
+        <div class="rc memory-rc">
+          <div class="rc-head"><span class="rc-title">Memory</span><div class="rc-action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body"><div class="mem-empty-hint">Agent 会在对话中自动记录重要信息<br>发起第一个对话后开始积累</div><div class="mem-auto-hint">✦ 由 Agent 自动生成，仅在此 Workspace 内有效</div></div>
+        </div>
+        <div class="rc warn-rc" id="instr-card-new">
+          <div class="rc-head"><span class="rc-title">指令</span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-instr')">+ 添加</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body"><div class="instr-guide">设置当前 Workspace 中 Agent 的角色和工作方式，后续所有对话自动生效</div></div>
+        </div>
+        <div class="rc">
+          <div class="rc-head"><span class="rc-title">参考文件</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-file')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body"><div class="ref-empty-hint">上传后，此 Workspace 中所有对话均可引用，无需重复上传</div></div>
+        </div>
+        <div class="rc">
+          <div class="rc-head"><span class="rc-title">定时任务</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-cron')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body"><div class="cron-empty-hint">设置定时任务，让 Agent 按计划自动完成重复性工作</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 已填充 -->
+  <div class="view wsd-view active" id="view-filled-ws">
+    <div class="wsd-topbar">
+      <div class="wsd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <div><div class="wsd-name">自媒体工作台</div><div class="wsd-sub">由 Wendy 创建 · 3月 27 更新</div></div>
+      <div style="margin-left:auto"><div class="wsd-topbar-actions"><button class="icon-btn" onclick="toggleWsMenu(event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="ws-options-menu" id="ws-options-menu"><div class="ws-options-item" onclick="closeWsMenu();showToast('重命名功能开发中')">重命名</div><div class="ws-options-item danger" onclick="closeWsMenu();openModal('modal-ws-delete')">删除 Workspace</div></div></div></div>
+    </div>
+    <div class="wsd-body">
+      <div class="wsd-left">
+        <div class="input-box">
+          <textarea class="input-textarea" placeholder="在此 Workspace 中发起新任务…" rows="3"></textarea>
+          <div class="input-actions">
+            <button class="input-action-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <button class="input-action-btn">技能</button>
+            <button class="input-action-btn">基础模型</button>
+            <button class="input-ws-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#F5A623"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              <span>自媒体工作台</span>
+            </button>
+            <div class="input-right-group">
+              <div class="mode-switcher"><span>⚡</span><span style="font-weight:500;margin-left:2px;font-size:12px">Free Mode</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></div>
+              <button class="send-btn" onclick="launchProject('自媒体工作台', document.querySelector('#view-filled-ws .input-textarea').value)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="biz-empty">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <div><div class="biz-empty-title">+ 添加业务视图</div><div class="biz-empty-sub">让 Agent 为你生成专属看板</div></div>
+        </div>
+        <div class="main-tab-block">
+          <div class="main-tab-bar">
+            <button class="main-tab active" onclick="switchMainTab('tab-projects')">Recent Projects</button>
+            <button class="main-tab" onclick="switchMainTab('tab-outputs')">输出物</button>
+            <div class="out-filter-row" id="out-filter-row" style="display:none">
+              <button class="out-filter active" onclick="switchOutFilter(this)">全部</button>
+              <button class="out-filter" onclick="switchOutFilter(this)">文档</button>
+              <button class="out-filter" onclick="switchOutFilter(this)">图片</button>
+              <button class="out-filter" onclick="switchOutFilter(this)">其他</button>
+            </div>
+          </div>
+          <div class="main-tab-panel active" id="tab-projects">
+            <div class="proj-list">
+              <div class="proj-item">
+                <div class="proj-dot" style="background:var(--brand-blue)"></div>
+                <div class="proj-info"><div class="proj-name">自媒体运营</div><div class="proj-meta">今天 14:32 更新</div></div>
+                <span class="proj-mode-tag proj-mode-pro">Pro</span>
+                <span class="proj-status-tag running">运行中</span>
+              </div>
+              <div class="proj-item">
+                <div class="proj-dot" style="background:var(--success)"></div>
+                <div class="proj-info"><div class="proj-name">竞品分析报告</div><div class="proj-meta">昨天 10:05 更新</div></div>
+                <span class="proj-mode-tag proj-mode-free">Free</span>
+                <span class="proj-status-tag done">已完成</span>
+              </div>
+              <div class="proj-item">
+                <div class="proj-dot" style="background:var(--text-4)"></div>
+                <div class="proj-info"><div class="proj-name">Q2 选题策划</div><div class="proj-meta">3月 28 更新</div></div>
+                <span class="proj-mode-tag proj-mode-free">Free</span>
+                <span class="proj-status-tag paused">已暂停</span>
+              </div>
+            </div>
+          </div>
+          <div class="main-tab-panel" id="tab-outputs">
+            <div class="out-list-header">
+              <span style="flex:1">名称</span>
+              <span class="out-col-type">类型</span>
+              <span class="out-col-time">创建时间</span>
+              <span class="out-col-op">操作</span>
+            </div>
+            <div id="out-list">
+              <div class="out-item"><span>📄</span><div style="flex:1;min-width:0"><div class="out-name">账号策划案 v1.docx</div><div class="out-meta">自媒体运营</div></div><span class="out-col-type">docx</span><span class="out-col-time">今天</span><div class="out-col-op" style="position:relative"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item danger" onclick="closeAllMenus();showToast('已删除')">删除</div></div></div></div>
+              <div class="out-item"><span>📊</span><div style="flex:1;min-width:0"><div class="out-name">赛道竞品分析.xlsx</div><div class="out-meta">自媒体运营</div></div><span class="out-col-type">xlsx</span><span class="out-col-time">昨天</span><div class="out-col-op" style="position:relative"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item danger" onclick="closeAllMenus();showToast('已删除')">删除</div></div></div></div>
+              <div class="out-item"><span>🖼️</span><div style="flex:1;min-width:0"><div class="out-name">账号头像方案.png</div><div class="out-meta">竞品分析报告</div></div><span class="out-col-type">png</span><span class="out-col-time">昨天</span><div class="out-col-op" style="position:relative"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item danger" onclick="closeAllMenus();showToast('已删除')">删除</div></div></div></div>
+            </div>
+            <div class="tab-empty" id="out-empty-filter" style="display:none">
+              <div class="tab-empty-icon">🔍</div>
+              <div class="tab-empty-title">没有符合条件的输出物</div>
+              <div class="tab-empty-sub">换个筛选条件试试</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wsd-right">
+        <div class="rc memory-rc">
+          <div class="rc-head"><span class="rc-title">Memory</span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-memory')">管理</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body">
+            <div class="mem-list">
+              <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">用户偏好小红书护肤赛道，重点关注成分党内容方向</div></div>
+              <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">发布频率定为每周 3 篇，周二、四、六为主</div></div>
+              <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">内容形式以图文为主，不出镜</div></div>
+            </div>
+            <div class="mem-auto">由 Agent 在对话中自动记录</div>
+          </div>
+        </div>
+        <div class="rc">
+          <div class="rc-head"><span class="rc-title">指令</span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-instr')">编辑</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body"><div class="instr-text">你是我的小红书自媒体运营助手，专注护肤赛道成分党内容。回答简洁实用，输出以图文脚本格式为主，每次给出 3 个备选方向。</div></div>
+        </div>
+        <div class="rc">
+          <div class="rc-head"><span class="rc-title">参考文件</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-file')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div class="ref-file"><span>📄</span><span style="flex:1">品牌调性手册.pdf</span><span style="font-size:11px;color:var(--text-4)">3.2MB</span><button class="ref-del-btn" onclick="openModal('modal-ref-delete')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+              <div class="ref-file"><span>📊</span><span style="flex:1">竞品矩阵分析表.xlsx</span><span style="font-size:11px;color:var(--text-4)">1.1MB</span><button class="ref-del-btn" onclick="openModal('modal-ref-delete')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="rc">
+          <div class="rc-head"><span class="rc-title">定时任务</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-cron')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-body">
+            <div class="cron-list">
+              <div class="cron-row" style="cursor:pointer" onclick="launchCronDetail('小红书热点日报')"><div class="cron-dot"></div><div class="cron-info"><div class="cron-name">小红书热点日报</div><div class="cron-meta">每天 10:00</div></div><span class="cron-status-tag running">运行中</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="cron-row" style="cursor:pointer" onclick="launchCronDetail('竞品动态监控')"><div class="cron-dot paused"></div><div class="cron-info"><div class="cron-name">竞品动态监控</div><div class="cron-meta">每天 8:00</div></div><span class="cron-status-tag paused">已暂停</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project 占位 -->
+  <div class="view" id="view-project">
+    <div class="wsd-topbar">
+      <nav class="breadcrumb">
+        <button class="breadcrumb-ws" id="breadcrumb-ws-name" onclick="backToWorkspace()">自媒体工作台</button>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="breadcrumb-proj" id="breadcrumb-proj-name">新任务</span>
+      </nav>
+      <div style="margin-left:auto"><button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button></div>
+    </div>
+    <div class="proj-placeholder">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text-4);margin-bottom:12px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div style="font-size:14px;font-weight:500;color:var(--text-3);margin-bottom:4px">Project 页占位</div>
+      <div style="font-size:13px;color:var(--text-4)">点击上方 Workspace 名称可返回</div>
+    </div>
+  </div>
+
+  <!-- 定时任务详情 -->
+  <div class="view" id="view-cron-detail">
+    <div class="wsd-topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="wsd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="wsd-name" id="cron-detail-name">小红书热点日报</div><div class="wsd-sub">运行中 · 每天 10:00</div></div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn-primary" style="display:flex;align-items:center;gap:6px;padding:6px 14px;font-size:13px" onclick="showToast('立即执行中…')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>Run now</button>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-wrap:wrap;gap:32px;padding:28px 32px;overflow-y:auto;align-items:flex-start">
+      <div style="min-width:220px;flex:1;display:flex;flex-direction:column;gap:20px">
+        <div><div style="font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px">Description</div><div style="font-size:14px;color:var(--text-2)">搜集 AI 领域最新新闻</div></div>
+        <div><div style="font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px">Workspace</div><div style="font-size:14px;color:var(--text-2)">自媒体工作台</div></div>
+        <div><div style="font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px">Repeats</div><div style="font-size:14px;color:var(--text-2)">每天 10:00</div></div>
+        <div><div style="font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px">IM 通知渠道</div><div style="font-size:14px;color:var(--text-2)">仅 Skywork 通知</div></div>
+      </div>
+      <div style="min-width:280px;flex:2;display:flex;flex-direction:column;gap:16px">
+        <div><div style="font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.4px">Instructions</div><div style="font-size:14px;color:var(--text-2);background:var(--surface-1);border:1px solid var(--line-1);border-radius:10px;padding:12px 14px;line-height:1.7">请帮我搜集今日 AI 领域的重要新闻和进展，整理成简报</div></div>
+        <div><div style="font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.4px">History</div><div style="background:var(--surface-1);border:1px solid var(--line-1);border-radius:10px;padding:32px;text-align:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text-4);display:block;margin:0 auto 8px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div style="font-size:13px;color:var(--text-4)">暂无运行记录</div><div style="font-size:12px;color:var(--text-4);margin-top:4px">点击 Run now 立即执行一次</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const existingWsNames=['自媒体工作台'];
+function switchView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.ws-nav-item').forEach(n=>n.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='view-new-ws')document.getElementById('nav-new-ws').classList.add('active');else if(id==='view-filled-ws')document.getElementById('nav-filled-ws').classList.add('active');}
+function launchProject(wsName,taskText){const projName=taskText?taskText.slice(0,18)+(taskText.length>18?'…':''):'新任务';document.getElementById('breadcrumb-ws-name').textContent=wsName;document.getElementById('breadcrumb-proj-name').textContent=projName;document.getElementById('view-project')._fromView=wsName==='自媒体工作台'?'view-filled-ws':'view-new-ws';document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-project').classList.add('active');}
+function backToWorkspace(){switchView(document.getElementById('view-project')._fromView||'view-filled-ws');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});});
+function showFieldError(errId,inputId,msg){const err=document.getElementById(errId),inp=document.getElementById(inputId);if(err){err.textContent=msg;err.classList.add('show');}if(inp)inp.classList.add('error');}
+function clearFieldError(errId,inputId){const err=document.getElementById(errId),inp=document.getElementById(inputId);if(err)err.classList.remove('show');if(inp)inp.classList.remove('error');}
+function createWorkspace(){
+  const nameInput=document.getElementById('ws-name-input');
+  const name=nameInput.value.trim();
+  if(!name){showFieldError('ws-name-error','ws-name-input','请输入 Workspace 名称');nameInput.focus();return;}
+  if(existingWsNames.some(n=>n===name)){showFieldError('ws-name-error','ws-name-input','已有同名 Workspace，请换一个名称');nameInput.focus();return;}
+  const instr=document.getElementById('ws-instr-input').value.trim();
+  existingWsNames.push(name);
+  document.getElementById('nav-new-ws-name').textContent=name;
+  document.getElementById('new-ws-title').textContent=name;
+  document.getElementById('new-ws-btn-name').textContent=name;
+  document.getElementById('nav-new-ws').style.display='flex';
+  if(instr){const card=document.getElementById('instr-card-new');if(card){card.classList.remove('warn-rc');const g=card.querySelector('.instr-guide');if(g){g.style.background='var(--brand-blue-50)';g.style.borderColor='var(--brand-blue-light)';g.style.color='var(--brand-blue)';g.textContent=instr;}const l=card.querySelector('.rc-link');if(l)l.textContent='编辑';}}
+  closeModal('modal-new-ws');clearFieldError('ws-name-error','ws-name-input');
+  switchView('view-new-ws');showToast('Workspace 已创建 ✓');
+  document.getElementById('ws-name-input').value='';document.getElementById('ws-instr-input').value='';
+}
+function confirmDeleteWorkspace(){closeModal('modal-ws-delete');document.getElementById('nav-filled-ws').style.display='none';switchView('view-new-ws');showToast('Workspace 已删除');}
+function toggleWsMenu(e){e.stopPropagation();document.getElementById('ws-options-menu').classList.toggle('open');}
+function closeWsMenu(){const m=document.getElementById('ws-options-menu');if(m)m.classList.remove('open');}
+document.addEventListener('click',()=>closeWsMenu());
+function saveInstr(){closeModal('modal-instr');showToast('指令已保存 ✓');}
+function doFileUpload(){closeModal('modal-file');showToast('文件上传成功 ✓');}
+function saveCron(){const n=document.getElementById('cron-name-input').value.trim();if(!n){closeModal('modal-cron');return;}closeModal('modal-cron');showToast('定时任务已创建 ✓');document.getElementById('cron-name-input').value='';}
+function launchCronDetail(name){document.getElementById('cron-detail-name').textContent=name;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-cron-detail').classList.add('active');}
+function selChip(el){const row=el.closest('.freq-row');row.querySelectorAll('.freq-chip').forEach(c=>c.classList.remove('sel'));el.classList.toggle('sel');}
+function selFreq(el){document.querySelectorAll('.freq-chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+function submitMemory(type){const input=document.getElementById('mem-input-'+type);const val=input?input.value.trim():'';if(!val)return;const list=document.getElementById('mem-list-'+type);if(list){const item=document.createElement('div');item.className='mem-modal-entry';item.textContent=val;list.appendChild(item);}if(input)input.value='';showToast('已告知 Agent，Memory 将自动更新 ✓');}
+function toggleOutMenu(e,btn){e.stopPropagation();const menu=btn.nextElementSibling;const isOpen=menu.classList.contains('open');closeAllMenus();if(!isOpen)menu.classList.add('open');}
+function closeAllMenus(){document.querySelectorAll('.out-menu.open').forEach(m=>m.classList.remove('open'));}
+document.addEventListener('click',closeAllMenus);
+function switchMainTab(panelId){
+  const block=document.getElementById('tab-projects').closest('.main-tab-block');
+  block.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+  block.querySelectorAll('.main-tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  const tabs=block.querySelectorAll('.main-tab');
+  if(panelId==='tab-projects')tabs[0].classList.add('active');else tabs[1].classList.add('active');
+  const filterRow=document.getElementById('out-filter-row');
+  if(filterRow)filterRow.style.display=panelId==='tab-outputs'?'flex':'none';
+}
+function switchNewWsTab(panelId){
+  const block=document.getElementById('new-tab-projects').closest('.main-tab-block');
+  block.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+  block.querySelectorAll('.main-tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  const tabs=block.querySelectorAll('.main-tab');
+  if(panelId==='new-tab-projects')tabs[0].classList.add('active');else tabs[1].classList.add('active');
+}
+function switchOutFilter(el){
+  document.querySelectorAll('.out-filter').forEach(f=>f.classList.remove('active'));el.classList.add('active');
+  const emptyEl=document.getElementById('out-empty-filter'),listEl=document.getElementById('out-list');
+  if(el.textContent==='图片'){if(emptyEl)emptyEl.style.display='block';if(listEl)listEl.style.display='none';}
+  else{if(emptyEl)emptyEl.style.display='none';if(listEl)listEl.style.display='block';}
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+</script>
+</body>
+</html>
