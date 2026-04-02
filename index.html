@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skywork · Workspace 原型 v7</title>
+<title>Skywork Workspace 原型</title>
+<meta name="description" content="Workspace 是一个持久工作环境，让用户可以为不同业务场景保存独立的上下文（指令、Memory、参考文件），Agent 在该 Workspace 内的所有对话中自动复用，不需要每次重新配置。">
+<meta property="og:title" content="Skywork Workspace 原型">
+<meta property="og:description" content="Workspace 是一个持久工作环境，让用户可以为不同业务场景保存独立的上下文（指令、Memory、参考文件），Agent 在该 Workspace 内的所有对话中自动复用，不需要每次重新配置。">
+<meta property="og:type" content="website">
 
 
 
@@ -111,7 +115,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .out-meta{font-size:11px;color:var(--text-4)}
 .out-more-btn{width:24px;height:24px;border-radius:6px;border:none;background:transparent;font-size:14px;color:var(--text-4);cursor:pointer;display:flex;align-items:center;justify-content:center;letter-spacing:1px;line-height:1;transition:background 0.12s}
 .out-more-btn:hover{background:var(--bg-main2);color:var(--text-2)}
-.out-menu{display:none;position:absolute;right:0;top:28px;background:var(--surface-1);border:1px solid var(--line-2);border-radius:10px;box-shadow:0 8px 24px rgba(0,8,24,0.12);z-index:200;min-width:168px;padding:4px;overflow:hidden}
+.out-menu{display:none;position:fixed;background:var(--surface-1);border:1px solid var(--line-2);border-radius:10px;box-shadow:0 8px 24px rgba(0,8,24,0.12);z-index:600;min-width:168px;padding:4px}
 .out-menu.open{display:block;animation:fadeIn 0.15s ease}
 .out-menu-item{padding:8px 12px;font-size:13px;color:var(--text-2);border-radius:7px;cursor:pointer;transition:background 0.1s;white-space:nowrap}
 .out-menu-item:hover{background:var(--bg-main1)}
@@ -545,7 +549,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
   <div class="sidebar-divider"></div>
   <div class="project-list">
     <div class="ws-section-header-row">
-      <span class="ws-ungrouped-label">Workspace</span>
+      <span class="ws-ungrouped-label">Workspace <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="什么是 Workspace">?</a></span>
       <button class="ws-icon-add-btn" onclick="openModal('modal-new-ws')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
     </div>
     <div class="ws-nav-item" id="nav-new-ws" style="display:none" onclick="switchView('view-new-ws')">
@@ -635,7 +639,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
   <div class="view wsd-view active" id="view-filled-ws">
     <div class="wsd-topbar">
       <div class="wsd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-      <div><div class="wsd-name">自媒体工作台 <a href="https://skywork.ai/help" target="_blank" class="help-icon" style="font-style:normal" title="帮助">?</a></div><div class="wsd-sub">由 Wendy 创建 · 3月 27 更新</div></div>
+      <div><div class="wsd-name">自媒体工作台</div><div class="wsd-sub">由 Wendy 创建 · 3月 27 更新</div></div>
       <div style="margin-left:auto"><div class="wsd-topbar-actions"><button class="icon-btn" onclick="toggleWsMenu(event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="ws-options-menu" id="ws-options-menu"><div class="ws-options-item" onclick="closeWsMenu();showToast('重命名功能开发中')">重命名</div><div class="ws-options-item danger" onclick="closeWsMenu();openModal('modal-ws-delete')">删除 Workspace</div></div></div></div>
     </div>
     <div class="wsd-body">
@@ -663,7 +667,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
         <div class="main-tab-block">
           <div class="main-tab-bar">
             <button class="main-tab active" onclick="switchMainTab('tab-projects')">Recent Projects</button>
-            <button class="main-tab" onclick="switchMainTab('tab-outputs')">输出物</button>
+            <button class="main-tab" onclick="switchMainTab('tab-outputs')">输出物 <a href="https://skywork.ai/help" target="_blank" class="help-icon" style="font-style:normal" title="什么是输出物" onclick="event.stopPropagation()">?</a></button>
             <div class="out-filter-row" id="out-filter-row" style="display:none">
               <button class="out-filter active" onclick="switchOutFilter(this)">全部</button>
               <button class="out-filter" onclick="switchOutFilter(this)">文档</button>
@@ -1006,8 +1010,21 @@ function launchCronDetail(name){document.getElementById('cron-detail-name').text
 function selChip(el){const row=el.closest('.freq-row');row.querySelectorAll('.freq-chip').forEach(c=>c.classList.remove('sel'));el.classList.toggle('sel');}
 function selFreq(el){document.querySelectorAll('.freq-chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
 function submitMemory(type){const input=document.getElementById('mem-input-'+type);const val=input?input.value.trim():'';if(!val)return;const list=document.getElementById('mem-list-'+type);if(list){const item=document.createElement('div');item.className='mem-modal-entry';item.textContent=val;list.appendChild(item);}if(input)input.value='';showToast('已告知 Agent，Memory 将自动更新 ✓');}
-function toggleOutMenu(e,btn){e.stopPropagation();const menu=btn.nextElementSibling;const isOpen=menu.classList.contains('open');closeAllMenus();if(!isOpen)menu.classList.add('open');}
+function toggleOutMenu(e,btn){
+  e.stopPropagation();
+  const menu=btn.nextElementSibling;
+  const isOpen=menu.classList.contains('open');
+  closeAllMenus();
+  if(!isOpen){
+    menu.classList.add('open');
+    const rect=btn.getBoundingClientRect();
+    menu.style.top=(rect.bottom+4)+'px';
+    menu.style.right=(window.innerWidth-rect.right)+'px';
+  }
+}
 function closeAllMenus(){document.querySelectorAll('.out-menu.open').forEach(m=>m.classList.remove('open'));}
+
+document.addEventListener('click',()=>closeAllMenus());
 document.addEventListener('click',closeAllMenus);
 function switchMainTab(panelId){
   const block=document.getElementById('tab-projects').closest('.main-tab-block');
@@ -1042,16 +1059,19 @@ function switchOutFilter(el){
       Array.from(listEl.children).forEach(item=>{
         if(item.classList.contains('hidden-item')){
           item.style.display='flex';
-          item.style.opacity='0.6';
+          item.style.opacity='1';
+          // 隐藏三点按钮
+          const moreBtn=item.querySelector('.out-more-btn');
+          if(moreBtn) moreBtn.style.display='none';
           // add restore btn
           if(!item.querySelector('.restore-btn')){
             const btn=document.createElement('button');
             btn.className='restore-btn';
-            btn.style.cssText='font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--brand-blue);color:var(--brand-blue);background:transparent;cursor:pointer;margin-right:6px;white-space:nowrap;flex-shrink:0';
+            btn.style.cssText='font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--brand-blue);color:var(--brand-blue);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0';
             btn.textContent='恢复';
             btn.onclick=(e)=>{e.stopPropagation();restoreOutputItem(item);};
             const opCol=item.querySelector('.out-col-op');
-            if(opCol) opCol.prepend(btn);
+            if(opCol) opCol.appendChild(btn);
           }
         } else {
           item.style.display='none';
@@ -1072,6 +1092,9 @@ function switchOutFilter(el){
         } else {
           item.style.display='flex';
           item.style.opacity='1';
+          // 恢复三点按钮
+          const moreBtn=item.querySelector('.out-more-btn');
+          if(moreBtn) moreBtn.style.display='';
         }
       });
     }
@@ -1206,6 +1229,7 @@ function closePreview(){
     </div>
   </div>
 </div>
+
 
 </body>
 </html>
