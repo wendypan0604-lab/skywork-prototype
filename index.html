@@ -229,26 +229,161 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .proj-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-4)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--text-1);color:#fff;font-size:13px;padding:10px 20px;border-radius:200px;opacity:0;transition:all 0.25s;z-index:1000;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── Help icon ── */
+.help-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:200px;background:var(--bg-main2);color:var(--text-4);font-size:9px;font-weight:700;font-style:normal;text-decoration:none;margin-left:4px;cursor:pointer;transition:background 0.12s,color 0.12s;vertical-align:middle;flex-shrink:0}
+.help-icon:hover{background:var(--brand-blue-50);color:var(--brand-blue)}
+/* ── Upload card ── */
+.upload-card-wrap{position:relative;display:inline-block}
+.upload-card{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--surface-1);border:1px solid var(--line-2);border-radius:14px;box-shadow:0 8px 32px rgba(0,8,24,0.14);z-index:400;width:240px;padding:6px;overflow:hidden;animation:slideUp 0.15s ease}
+.upload-card.open{display:block}
+.upload-card-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;transition:background 0.1s;font-size:13px;color:var(--text-2)}
+.upload-card-item:hover{background:var(--bg-main1)}
+.upload-card-item svg{color:var(--text-4);flex-shrink:0}
+.upload-card-label{font-weight:500}
+.upload-card-sub{font-size:11px;color:var(--text-4);margin-top:1px}
+/* ── Memory panel new style ── */
+.mem-panel-content{font-size:13px;color:var(--text-2);line-height:1.7;padding:2px 0 8px}
+.mem-panel-input-wrap{background:var(--surface-2);border:1px solid var(--line-1);border-radius:12px;padding:10px 12px 8px;margin-top:8px;transition:border-color 0.15s}
+.mem-panel-input-wrap:focus-within{border-color:var(--line-focus)}
+.mem-panel-ta{width:100%;border:none;outline:none;font-family:inherit;font-size:13px;color:var(--text-2);resize:none;background:transparent;min-height:40px;line-height:1.5}
+.mem-panel-ta::placeholder{color:var(--text-4)}
+.mem-panel-row{display:flex;align-items:center;justify-content:flex-end;margin-top:6px}
+.mem-panel-send{width:24px;height:24px;border-radius:7px;background:var(--brand-blue);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff}
+.mem-panel-send:hover{background:var(--brand-blue-hover)}
+/* ── Output hidden / preview ── */
+.out-hidden-badge{font-size:10px;font-weight:500;padding:1px 7px;border-radius:4px;background:var(--bg-main2);color:var(--text-4);cursor:pointer;display:none;align-items:center;gap:4px;white-space:nowrap;border:none;font-family:inherit;margin-left:auto}
+.out-hidden-badge.visible{display:inline-flex}
+.out-hidden-badge:hover{background:var(--line-2)}
+.out-item.hidden-item{opacity:0.4;display:none}
+.out-item.hidden-item.show-hidden{display:flex}
+/* ── Output preview sheet ── */
+.preview-sheet{display:none;position:fixed;inset:0;z-index:600;align-items:flex-end;justify-content:center}
+.preview-sheet.open{display:flex;animation:fadeIn 0.2s ease}
+.preview-sheet-backdrop{position:absolute;inset:0;background:var(--bg-overlay)}
+.preview-sheet-box{position:relative;z-index:1;background:var(--surface-1);border-radius:20px 20px 0 0;width:100%;max-width:900px;height:82vh;display:flex;flex-direction:column;animation:slideUpSheet 0.25s ease;overflow:hidden}
+@keyframes slideUpSheet{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.preview-sheet-header{padding:16px 20px 12px;border-bottom:1px solid var(--line-1);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.preview-sheet-title{font-size:15px;font-weight:500;color:var(--text-1);flex:1}
+.preview-sheet-close{width:28px;height:28px;border-radius:8px;border:1px solid var(--line-1);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3)}
+.preview-sheet-close:hover{background:var(--bg-main1)}
+.preview-sheet-body{flex:1;overflow-y:auto;padding:24px 28px}
+.preview-sheet-meta{font-size:12px;color:var(--text-4);margin-bottom:16px;display:flex;gap:16px}
+.preview-content{font-size:14px;color:var(--text-2);line-height:1.8}
+.preview-content h2{font-size:16px;font-weight:600;color:var(--text-1);margin:20px 0 8px}
+.preview-content p{margin-bottom:12px}
+.preview-content ul{padding-left:20px;margin-bottom:12px}
+.preview-content li{margin-bottom:6px}
+/* rc-title with help */
+.rc-title-row{display:flex;align-items:center;gap:0;flex:1}
+
+
+/* ── Project detail page ── */
+.proj-detail{display:flex;flex:1;overflow:hidden;background:var(--bg-main1)}
+/* Left sidebar */
+.proj-sidebar{width:260px;flex-shrink:0;background:var(--surface-1);border-right:1px solid var(--line-1);display:flex;flex-direction:column;overflow:hidden}
+.proj-sidebar-head{padding:16px 16px 12px;border-bottom:1px solid var(--line-1)}
+.proj-sidebar-back{display:flex;align-items:center;gap:6px;margin-bottom:10px;cursor:pointer;color:var(--text-4);font-size:13px;transition:color 0.12s}
+.proj-sidebar-back:hover{color:var(--brand-blue)}
+.proj-sidebar-breadcrumb{font-size:13px;line-height:1.5}
+.proj-sidebar-ws{color:var(--brand-blue);font-weight:500;cursor:pointer;background:none;border:none;font-family:inherit;font-size:13px;padding:0}
+.proj-sidebar-ws:hover{opacity:0.75}
+.proj-sidebar-proj{color:var(--text-2);font-weight:500}
+.proj-sidebar-body{flex:1;overflow-y:auto;padding:14px 0}
+.proj-sidebar-body::-webkit-scrollbar{width:3px}
+.proj-sidebar-body::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:200px}
+.proj-res-section{padding:0 14px 12px}
+.proj-res-title{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:4px;letter-spacing:0.1px}
+.proj-res-hint{font-size:11px;color:var(--text-4);line-height:1.6;margin-bottom:8px}
+.proj-res-add{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:7px;border:1px dashed var(--line-2);border-radius:8px;background:transparent;font-size:12px;color:var(--text-4);cursor:pointer;font-family:inherit;transition:all 0.12s}
+.proj-res-add:hover{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-blue-50)}
+.proj-sidebar-divider{height:1px;background:var(--line-1);margin:4px 14px 12px}
+.proj-kb-section{padding:0 14px}
+.proj-kb-title{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:var(--text-4);margin-bottom:8px}
+.proj-kb-file{display:flex;align-items:center;gap:8px;padding:5px 4px;border-radius:6px;cursor:pointer;transition:background 0.12s}
+.proj-kb-file:hover{background:var(--bg-main1)}
+.proj-kb-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.proj-kb-name{font-size:12px;color:var(--text-2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.proj-sidebar-footer{padding:10px 14px;border-top:1px solid var(--line-1);display:flex;align-items:center;justify-content:space-between}
+.proj-sidebar-src-count{font-size:12px;color:var(--text-4)}
+.proj-sidebar-icons{display:flex;gap:6px}
+.proj-sidebar-icon-btn{width:26px;height:26px;border-radius:7px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-4);transition:background 0.12s}
+.proj-sidebar-icon-btn:hover{background:var(--bg-main1);color:var(--text-2)}
+/* Center chat */
+.proj-chat{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.proj-messages{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:20px}
+.proj-messages::-webkit-scrollbar{width:3px}
+.proj-messages::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:200px}
+.proj-msg-ai{max-width:680px;align-self:flex-start}
+.proj-msg-ai-content{font-size:14px;color:var(--text-2);line-height:1.8}
+.proj-msg-ai-content strong{font-weight:600;color:var(--text-1)}
+.proj-msg-ai-content ul{padding-left:20px;margin:8px 0}
+.proj-msg-ai-content li{margin-bottom:6px}
+.proj-msg-meta{display:flex;align-items:center;gap:10px;margin-top:10px}
+.proj-msg-icon-btn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-4);transition:background 0.12s}
+.proj-msg-icon-btn:hover{background:var(--bg-main2)}
+.proj-feedback-card{background:var(--surface-1);border:1px solid var(--line-1);border-radius:12px;padding:14px 16px;margin-top:4px;max-width:340px}
+.proj-feedback-title{font-size:13px;font-weight:500;color:var(--text-2);margin-bottom:3px}
+.proj-feedback-sub{font-size:12px;color:var(--text-4);margin-bottom:10px}
+.proj-feedback-btns{display:flex;gap:8px}
+.proj-feedback-btn{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;border:1px solid var(--line-1);background:transparent;font-size:13px;color:var(--text-2);cursor:pointer;font-family:inherit;transition:all 0.12s}
+.proj-feedback-btn:hover{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-blue-50)}
+/* Output type chips */
+.proj-output-types{display:flex;gap:8px;flex-wrap:wrap;padding:10px 32px 2px}
+.proj-output-chip{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:200px;border:1px solid var(--line-1);background:var(--surface-1);font-size:12px;font-weight:500;color:var(--text-3);cursor:pointer;font-family:inherit;transition:all 0.12s;white-space:nowrap}
+.proj-output-chip:hover{border-color:var(--brand-blue);color:var(--brand-blue);background:var(--brand-blue-50)}
+/* Bottom input */
+.proj-input-wrap{padding:10px 24px 16px;flex-shrink:0}
+.proj-input-box{background:var(--surface-1);border:1px solid var(--line-1);border-radius:14px;padding:12px 14px 10px;box-shadow:0 2px 8px rgba(0,8,24,0.05)}
+.proj-input-ta{width:100%;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text-2);resize:none;background:transparent;min-height:44px;line-height:1.6}
+.proj-input-ta::placeholder{color:var(--text-4)}
+.proj-input-actions{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line-1)}
+.proj-input-left{display:flex;align-items:center;gap:6px}
+.proj-input-attach{width:26px;height:26px;border-radius:7px;border:1px solid var(--line-1);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3);transition:all 0.12s}
+.proj-input-attach:hover{border-color:var(--brand-blue);color:var(--brand-blue)}
+.proj-mode-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;border:1px solid var(--line-1);background:transparent;font-size:12px;color:var(--text-3);cursor:pointer;font-family:inherit}
+.proj-tool-btn{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;border:1px solid var(--line-1);background:transparent;font-size:12px;color:var(--text-3);cursor:pointer;font-family:inherit}
+.proj-send-btn{width:30px;height:30px;border-radius:8px;background:var(--brand-blue);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;margin-left:auto}
+.proj-send-btn:hover{background:var(--brand-blue-hover)}
+/* Right panel (collapsed icon rail) */
+.proj-right-rail{width:48px;flex-shrink:0;background:var(--surface-1);border-left:1px solid var(--line-1);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px}
+.proj-rail-btn{width:34px;height:34px;border-radius:9px;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--text-4);gap:2px;transition:background 0.12s}
+.proj-rail-btn:hover{background:var(--bg-main1);color:var(--text-2)}
+.proj-rail-count{font-size:9px;font-weight:600;line-height:1}
+.proj-rail-sep{width:24px;height:1px;background:var(--line-1);margin:4px 0}
+
 </style>
 </head>
 <body>
 <div id="toast" class="toast"></div>
 
-<!-- Memory Modal -->
+
+
+<!-- Memory 管理弹窗 -->
 <div class="modal-overlay" id="modal-memory">
   <div class="mem-modal">
-    <button class="mem-modal-close" onclick="closeModal('modal-memory')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <button class="mem-modal-close" onclick="closeModal('modal-memory');memResetToReadonly()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div class="mem-modal-header">
       <div class="mem-modal-title">管理 Workspace Memory</div>
-      <div class="mem-modal-desc">Agent 会在每次对话后自动更新 Memory。你也可以在这里告诉 Agent 需要增加或修改的内容。</div>
+      <div class="mem-modal-desc">Agent 会在每次对话后自动更新 Memory。你也可以告诉 Agent 需要修改的内容。</div>
     </div>
-    <div class="mem-modal-list" id="mem-list-filled">
+    <!-- 只读内容区 -->
+    <div class="mem-modal-list" id="mem-modal-content">
       <div style="font-size:14px;color:var(--text-2);line-height:1.8;white-space:pre-wrap;padding:4px 0">用户偏好小红书护肤赛道，重点关注成分党内容方向。发布频率定为每周 3 篇，周二、四、六为主。内容形式以图文为主，不出镜。用户对竞品分析有持续需求，关注成分党头部账号动态。</div>
     </div>
-    <div class="mem-modal-input-area">
+    <!-- Step2 底部：编辑按钮 -->
+    <div id="mem-footer-readonly" style="padding:12px 20px 16px;border-top:1px solid var(--line-1);display:flex;justify-content:flex-end">
+      <button class="btn-primary" onclick="memShowInput()" style="font-size:13px;padding:7px 18px">编辑</button>
+    </div>
+    <!-- Step3 底部：输入框 + 发送（默认隐藏） -->
+    <div id="mem-footer-edit" style="display:none;padding:12px 16px 16px;border-top:1px solid var(--line-1)">
+      <div style="font-size:12px;color:var(--text-4);margin-bottom:8px">告诉 Agent 你想新增、删除或修改的内容</div>
       <div class="mem-modal-wrap">
-        <textarea class="mem-modal-ta" id="mem-input-filled" placeholder="告诉 Agent 你想修正或补充什么，它会帮你更新 Memory…"></textarea>
-        <div class="mem-modal-row"><button class="mem-send" onclick="submitMemory('filled')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+        <textarea class="mem-modal-ta" id="mem-modal-input" placeholder="告诉skywork你想新增、删除或修改的内容"></textarea>
+        <div class="mem-modal-row" style="justify-content:space-between;align-items:center">
+          <button onclick="memResetToReadonly()" style="font-size:12px;color:var(--text-4);background:transparent;border:none;cursor:pointer;font-family:inherit">取消</button>
+          <button class="mem-send" onclick="submitMemModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
       </div>
     </div>
   </div>
@@ -303,7 +438,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
   <div class="modal-box">
     <div class="modal-title">编辑指令</div>
     <div class="modal-sub" style="margin-bottom:16px">设定 Agent 在此 Workspace 中的角色与工作方式</div>
-    <textarea class="modal-textarea" style="min-height:120px" placeholder="例如：你是我的自媒体运营助手，专注护肤赛道成分党内容，回答简洁实用，每次给出 3 个备选方向…"></textarea>
+    <textarea class="modal-textarea" id="instr-textarea" style="min-height:120px" placeholder="例如：你是我的自媒体运营助手，专注护肤赛道成分党内容，回答简洁实用，每次给出 3 个备选方向…"></textarea>
     <div class="instr-modal-hint">✦ 此指令在该 Workspace 的所有对话中自动生效，无需每次重复交代</div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-instr')">取消</button>
@@ -312,19 +447,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
   </div>
 </div>
 
-<!-- 上传参考文件 -->
-<div class="modal-overlay" id="modal-file">
-  <div class="modal-box sm">
-    <div class="modal-title">添加参考文件</div>
-    <div class="modal-sub" style="margin-bottom:16px">上传后，此 Workspace 中所有对话均可引用，无需重复上传</div>
-    <div class="file-zone" onclick="doFileUpload()">
-      <div class="file-zone-icon">📁</div>
-      <div class="file-zone-text">点击上传或拖拽文件到此处</div>
-      <div class="file-zone-sub">支持 PDF、Word、Excel、图片等，单文件最大 50MB</div>
-    </div>
-    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modal-file')">关闭</button></div>
-  </div>
-</div>
+<!-- file upload card replaces modal -->
 
 <!-- 新建定时任务 -->
 <div class="modal-overlay" id="modal-cron">
@@ -457,7 +580,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
         <div class="input-box">
           <textarea class="input-textarea" placeholder="在此 Workspace 中发起新任务…" rows="3"></textarea>
           <div class="input-actions">
-            <button class="input-action-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <div class="upload-card-wrap" style="position:relative"><button class="input-action-btn" onclick="toggleUploadCard(event,this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="upload-card" style="top:auto;bottom:calc(100% + 6px);right:auto;left:0"><div class="upload-card-item" onclick="closeUploadCard();doFileUpload('本地上传')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div><div class="upload-card-label">Local Upload</div><div class="upload-card-sub">从本地上传文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('从知识库添加中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><div><div class="upload-card-label">Upload from knowledge base</div><div class="upload-card-sub">从知识库选取文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('云盘上传中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg><div><div class="upload-card-label">Cloud Upload</div><div class="upload-card-sub">从云端导入文件</div></div></div></div></div>
             <button class="input-action-btn">技能</button>
             <button class="input-action-btn">基础模型</button>
             <button class="input-ws-btn" id="new-ws-action-btn">
@@ -489,19 +612,19 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
       </div>
       <div class="wsd-right">
         <div class="rc memory-rc">
-          <div class="rc-head"><span class="rc-title">Memory</span><div class="rc-action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">Memory <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body"><div class="mem-empty-hint">Agent 会在对话中自动记录重要信息<br>发起第一个对话后开始积累</div><div class="mem-auto-hint">✦ 由 Agent 自动生成，仅在此 Workspace 内有效</div></div>
         </div>
         <div class="rc warn-rc" id="instr-card-new">
-          <div class="rc-head"><span class="rc-title">指令</span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-instr')">+ 添加</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">指令 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><span class="rc-link" onclick="openInstr()">+ 添加</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body"><div class="instr-guide">设置当前 Workspace 中 Agent 的角色和工作方式，后续所有对话自动生效</div></div>
         </div>
         <div class="rc">
-          <div class="rc-head"><span class="rc-title">参考文件</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-file')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">参考文件 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><div class="upload-card-wrap"><button class="rc-plus" onclick="toggleUploadCard(event,this)" id="ref-upload-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="upload-card" id="upload-card-ref"><div class="upload-card-item" onclick="closeUploadCard();doFileUpload('本地上传')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div><div class="upload-card-label">Local Upload</div><div class="upload-card-sub">从本地上传文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('从知识库添加中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><div><div class="upload-card-label">Upload from knowledge base</div><div class="upload-card-sub">从知识库选取文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('云盘上传中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg><div><div class="upload-card-label">Cloud Upload</div><div class="upload-card-sub">从云端导入文件</div></div></div></div></div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body"><div class="ref-empty-hint">上传后，此 Workspace 中所有对话均可引用，无需重复上传</div></div>
         </div>
         <div class="rc">
-          <div class="rc-head"><span class="rc-title">定时任务</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-cron')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">定时任务 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body"><div class="cron-empty-hint">设置定时任务，让 Agent 按计划自动完成重复性工作</div></div>
         </div>
       </div>
@@ -512,7 +635,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
   <div class="view wsd-view active" id="view-filled-ws">
     <div class="wsd-topbar">
       <div class="wsd-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-      <div><div class="wsd-name">自媒体工作台</div><div class="wsd-sub">由 Wendy 创建 · 3月 27 更新</div></div>
+      <div><div class="wsd-name">自媒体工作台 <a href="https://skywork.ai/help" target="_blank" class="help-icon" style="font-style:normal" title="帮助">?</a></div><div class="wsd-sub">由 Wendy 创建 · 3月 27 更新</div></div>
       <div style="margin-left:auto"><div class="wsd-topbar-actions"><button class="icon-btn" onclick="toggleWsMenu(event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button><div class="ws-options-menu" id="ws-options-menu"><div class="ws-options-item" onclick="closeWsMenu();showToast('重命名功能开发中')">重命名</div><div class="ws-options-item danger" onclick="closeWsMenu();openModal('modal-ws-delete')">删除 Workspace</div></div></div></div>
     </div>
     <div class="wsd-body">
@@ -520,7 +643,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
         <div class="input-box">
           <textarea class="input-textarea" placeholder="在此 Workspace 中发起新任务…" rows="3"></textarea>
           <div class="input-actions">
-            <button class="input-action-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <div class="upload-card-wrap" style="position:relative"><button class="input-action-btn" onclick="toggleUploadCard(event,this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="upload-card" style="top:auto;bottom:calc(100% + 6px);right:auto;left:0"><div class="upload-card-item" onclick="closeUploadCard();doFileUpload('本地上传')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div><div class="upload-card-label">Local Upload</div><div class="upload-card-sub">从本地上传文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('从知识库添加中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><div><div class="upload-card-label">Upload from knowledge base</div><div class="upload-card-sub">从知识库选取文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('云盘上传中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg><div><div class="upload-card-label">Cloud Upload</div><div class="upload-card-sub">从云端导入文件</div></div></div></div></div>
             <button class="input-action-btn">技能</button>
             <button class="input-action-btn">基础模型</button>
             <button class="input-ws-btn">
@@ -546,23 +669,24 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
               <button class="out-filter" onclick="switchOutFilter(this)">文档</button>
               <button class="out-filter" onclick="switchOutFilter(this)">图片</button>
               <button class="out-filter" onclick="switchOutFilter(this)">其他</button>
+              <button class="out-filter" id="hidden-filter-btn" onclick="switchOutFilter(this)" style="display:none">已隐藏</button>
             </div>
           </div>
           <div class="main-tab-panel active" id="tab-projects">
             <div class="proj-list">
-              <div class="proj-item">
+              <div class="proj-item" onclick="launchProjectFromList(this)">
                 <div class="proj-dot" style="background:var(--brand-blue)"></div>
                 <div class="proj-info"><div class="proj-name">自媒体运营</div><div class="proj-meta">今天 14:32 更新</div></div>
                 <span class="proj-mode-tag proj-mode-pro">Pro</span>
                 <span class="proj-status-tag running">运行中</span>
               </div>
-              <div class="proj-item">
+              <div class="proj-item" onclick="launchProjectFromList(this)">
                 <div class="proj-dot" style="background:var(--success)"></div>
                 <div class="proj-info"><div class="proj-name">竞品分析报告</div><div class="proj-meta">昨天 10:05 更新</div></div>
                 <span class="proj-mode-tag proj-mode-free">Free</span>
                 <span class="proj-status-tag done">已完成</span>
               </div>
-              <div class="proj-item">
+              <div class="proj-item" onclick="launchProjectFromList(this)">
                 <div class="proj-dot" style="background:var(--text-4)"></div>
                 <div class="proj-info"><div class="proj-name">Q2 选题策划</div><div class="proj-meta">3月 28 更新</div></div>
                 <span class="proj-mode-tag proj-mode-free">Free</span>
@@ -571,16 +695,16 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
             </div>
           </div>
           <div class="main-tab-panel" id="tab-outputs">
-            <div class="out-list-header">
-              <span style="flex:1">名称</span>
+            <div class="out-list-header" style="display:flex;align-items:center">
+              <span style="flex:1">名称 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span>
               <span class="out-col-type">类型</span>
               <span class="out-col-time">创建时间</span>
               <span class="out-col-op">操作</span>
             </div>
             <div id="out-list">
-              <div class="out-item"><span>📄</span><div style="flex:1;min-width:0"><div class="out-name">账号策划案 v1.docx</div><div class="out-meta">自媒体运营</div></div><span class="out-col-type">docx</span><span class="out-col-time">今天</span><div class="out-col-op" style="position:relative"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item danger" onclick="closeAllMenus();showToast('已删除')">删除</div></div></div></div>
-              <div class="out-item"><span>📊</span><div style="flex:1;min-width:0"><div class="out-name">赛道竞品分析.xlsx</div><div class="out-meta">自媒体运营</div></div><span class="out-col-type">xlsx</span><span class="out-col-time">昨天</span><div class="out-col-op" style="position:relative"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item danger" onclick="closeAllMenus();showToast('已删除')">删除</div></div></div></div>
-              <div class="out-item"><span>🖼️</span><div style="flex:1;min-width:0"><div class="out-name">账号头像方案.png</div><div class="out-meta">竞品分析报告</div></div><span class="out-col-type">png</span><span class="out-col-time">昨天</span><div class="out-col-op" style="position:relative"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item danger" onclick="closeAllMenus();showToast('已删除')">删除</div></div></div></div>
+              <div class="out-item" data-name="账号策划案 v1.docx" onclick="openPreview(this)"><span>📄</span><div style="flex:1;min-width:0"><div class="out-name">账号策划案 v1.docx</div><div class="out-meta">自媒体运营</div></div><span class="out-col-type">docx</span><span class="out-col-time">今天</span><div class="out-col-op" style="position:relative" onclick="event.stopPropagation()"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item" onclick="closeAllMenus();hideOutputItem(this)">隐藏</div></div></div></div>
+              <div class="out-item" data-name="赛道竞品分析.xlsx" onclick="openPreview(this)"><span>📊</span><div style="flex:1;min-width:0"><div class="out-name">赛道竞品分析.xlsx</div><div class="out-meta">自媒体运营</div></div><span class="out-col-type">xlsx</span><span class="out-col-time">昨天</span><div class="out-col-op" style="position:relative" onclick="event.stopPropagation()"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item" onclick="closeAllMenus();hideOutputItem(this)">隐藏</div></div></div></div>
+              <div class="out-item" data-name="账号头像方案.png" onclick="openPreview(this)"><span>🖼️</span><div style="flex:1;min-width:0"><div class="out-name">账号头像方案.png</div><div class="out-meta">竞品分析报告</div></div><span class="out-col-type">png</span><span class="out-col-time">昨天</span><div class="out-col-op" style="position:relative" onclick="event.stopPropagation()"><button class="out-more-btn" onclick="toggleOutMenu(event,this)">···</button><div class="out-menu"><div class="out-menu-item" onclick="closeAllMenus();showToast('下载中…')">下载</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加为 Workspace 参考 ✓')">添加为 Workspace 参考</div><div class="out-menu-item" onclick="closeAllMenus();showToast('已添加到 Knowledge ✓')">添加到 Knowledge</div><div class="out-menu-item" onclick="closeAllMenus();hideOutputItem(this)">隐藏</div></div></div></div>
             </div>
             <div class="tab-empty" id="out-empty-filter" style="display:none">
               <div class="tab-empty-icon">🔍</div>
@@ -591,23 +715,41 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
         </div>
       </div>
       <div class="wsd-right">
-        <div class="rc memory-rc">
-          <div class="rc-head"><span class="rc-title">Memory</span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-memory')">管理</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+        <div class="rc memory-rc" id="mem-rc-filled">
+          <div class="rc-head"><span class="rc-title">Memory <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-memory')">管理</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body">
-            <div class="mem-list">
-              <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">用户偏好小红书护肤赛道，重点关注成分党内容方向</div></div>
-              <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">发布频率定为每周 3 篇，周二、四、六为主</div></div>
-              <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">内容形式以图文为主，不出镜</div></div>
+            <div id="mem-panel-view">
+              <div class="mem-list">
+                <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">用户偏好小红书护肤赛道，重点关注成分党内容方向</div></div>
+                <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">发布频率定为每周 3 篇，周二、四、六为主</div></div>
+                <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">内容形式以图文为主，不出镜</div></div>
+              </div>
+              <div class="mem-auto">由 Agent 在对话中自动记录</div>
+              
             </div>
-            <div class="mem-auto">由 Agent 在对话中自动记录</div>
+            <div id="mem-panel-edit" style="display:none">
+              <div class="mem-list" style="margin-bottom:8px">
+                <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">用户偏好小红书护肤赛道，重点关注成分党内容方向</div></div>
+                <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">发布频率定为每周 3 篇，周二、四、六为主</div></div>
+                <div class="mem-item"><div class="mem-dot"></div><div class="mem-text">内容形式以图文为主，不出镜</div></div>
+              </div>
+              <div class="mem-auto" style="margin-bottom:8px">由 Agent 在对话中自动记录</div>
+              <div class="mem-panel-input-wrap">
+                <textarea class="mem-panel-ta" id="mem-panel-input" placeholder="告诉 Agent 你想修正或补充什么，它会帮你更新 Memory…"></textarea>
+                <div class="mem-panel-row">
+                  <button onclick="hideMemInput()" style="font-size:11px;color:var(--text-4);background:transparent;border:none;cursor:pointer;margin-right:8px;font-family:inherit">取消</button>
+                  <button class="mem-panel-send" onclick="submitMemPanel()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="rc">
-          <div class="rc-head"><span class="rc-title">指令</span><div class="rc-action"><span class="rc-link" onclick="openModal('modal-instr')">编辑</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">指令 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><span class="rc-link" onclick="openInstr()">编辑</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body"><div class="instr-text">你是我的小红书自媒体运营助手，专注护肤赛道成分党内容。回答简洁实用，输出以图文脚本格式为主，每次给出 3 个备选方向。</div></div>
         </div>
         <div class="rc">
-          <div class="rc-head"><span class="rc-title">参考文件</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-file')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">参考文件 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><div class="upload-card-wrap"><button class="rc-plus" onclick="toggleUploadCard(event,this)" id="ref-upload-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><div class="upload-card" id="upload-card-ref"><div class="upload-card-item" onclick="closeUploadCard();doFileUpload('本地上传')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div><div class="upload-card-label">Local Upload</div><div class="upload-card-sub">从本地上传文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('从知识库添加中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><div><div class="upload-card-label">Upload from knowledge base</div><div class="upload-card-sub">从知识库选取文件</div></div></div><div class="upload-card-item" onclick="closeUploadCard();showToast('云盘上传中…')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg><div><div class="upload-card-label">Cloud Upload</div><div class="upload-card-sub">从云端导入文件</div></div></div></div></div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body">
             <div style="display:flex;flex-direction:column;gap:2px">
               <div class="ref-file"><span>📄</span><span style="flex:1">品牌调性手册.pdf</span><span style="font-size:11px;color:var(--text-4)">3.2MB</span><button class="ref-del-btn" onclick="openModal('modal-ref-delete')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
@@ -616,7 +758,7 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
           </div>
         </div>
         <div class="rc">
-          <div class="rc-head"><span class="rc-title">定时任务</span><div class="rc-action"><button class="rc-plus" onclick="openModal('modal-cron')"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          <div class="rc-head"><span class="rc-title">定时任务 <a href="https://skywork.ai/help" target="_blank" class="help-icon" title="帮助">?</a></span><div class="rc-action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><polyline points="9 18 15 12 9 6"/></svg></div></div>
           <div class="rc-body">
             <div class="cron-list">
               <div class="cron-row" style="cursor:pointer" onclick="launchCronDetail('小红书热点日报')"><div class="cron-dot"></div><div class="cron-info"><div class="cron-name">小红书热点日报</div><div class="cron-meta">每天 10:00</div></div><span class="cron-status-tag running">运行中</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0;margin-left:4px"><polyline points="9 18 15 12 9 6"/></svg></div>
@@ -630,18 +772,149 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 
   <!-- Project 占位 -->
   <div class="view" id="view-project">
-    <div class="wsd-topbar">
-      <nav class="breadcrumb">
-        <button class="breadcrumb-ws" id="breadcrumb-ws-name" onclick="backToWorkspace()">自媒体工作台</button>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4);flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
-        <span class="breadcrumb-proj" id="breadcrumb-proj-name">新任务</span>
-      </nav>
-      <div style="margin-left:auto"><button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg></button></div>
-    </div>
-    <div class="proj-placeholder">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text-4);margin-bottom:12px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <div style="font-size:14px;font-weight:500;color:var(--text-3);margin-bottom:4px">Project 页占位</div>
-      <div style="font-size:13px;color:var(--text-4)">点击上方 Workspace 名称可返回</div>
+    <div class="proj-detail">
+      <!-- Left sidebar -->
+      <div class="proj-sidebar">
+        <div class="proj-sidebar-head">
+          <div class="proj-sidebar-back" onclick="backToWorkspace()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>返回</span>
+          </div>
+          <div class="proj-sidebar-breadcrumb">
+            <button class="proj-sidebar-ws" id="proj-breadcrumb-ws" onclick="backToWorkspace()">自媒体工作台</button>
+            <span style="color:var(--text-4);margin:0 3px">/</span>
+            <span class="proj-sidebar-proj" id="proj-breadcrumb-name">自媒体运营</span>
+          </div>
+        </div>
+        <div class="proj-sidebar-body">
+          <div class="proj-res-section">
+            <div class="proj-res-title">
+              <span>资源</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-4)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="proj-res-hint">已自动使用Workspace内参考文件，无需重复添加</div>
+            <button class="proj-res-add" onclick="showToast('添加资源功能开发中')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              添加资源
+            </button>
+          </div>
+          <div class="proj-sidebar-divider"></div>
+          <div class="proj-kb-section">
+            <div class="proj-kb-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              知识库
+            </div>
+            <div class="proj-kb-file">
+              <div class="proj-kb-icon" style="background:#4F9CF9">md</div>
+              <span class="proj-kb-name">account_metrics_summary.md</span>
+            </div>
+            <div class="proj-kb-file">
+              <div class="proj-kb-icon" style="background:#4F9CF9">md</div>
+              <span class="proj-kb-name">published_content_list.md</span>
+            </div>
+          </div>
+        </div>
+        <div class="proj-sidebar-footer">
+          <span class="proj-sidebar-src-count">来源：2</span>
+          <div class="proj-sidebar-icons">
+            <button class="proj-sidebar-icon-btn" title="分享" onclick="showToast('链接已复制 ✓')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+            <button class="proj-sidebar-icon-btn" title="导出" onclick="showToast('导出中…')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button class="proj-sidebar-icon-btn" title="更多" onclick="showToast('更多操作')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center chat -->
+      <div class="proj-chat">
+        <div class="proj-messages" id="proj-messages">
+          <!-- AI message -->
+          <div class="proj-msg-ai">
+            <div class="proj-msg-ai-content">
+              <p>开场前背景音乐已生成完毕 🎵</p>
+              <p>这段 BGM 时长约 <strong>3分钟</strong>，风格特点如下：</p>
+              <ul>
+                <li>🎹 <strong>轻盈钢琴旋律</strong>作为主线，温暖自然不抢眼</li>
+                <li>🥁 <strong>柔和电子节拍</strong>，BPM 约 95-110，节奏舒适不紧迫</li>
+                <li>🎷 <strong>轻爵士氛围</strong>，营造专业又放松的候场感</li>
+                <li>✨ <strong>明亮合成器铺底</strong>，烘托科技感与积极气氛</li>
+              </ul>
+              <p>非常适合在观众入场、候场签到阶段循环播放，帮助暖场、引导情绪，为正式发布会开场做好铺垫。如需调整风格（比如更偏电子/更偏古典/更有节奏感），随时告诉我！</p>
+            </div>
+            <div class="proj-msg-meta">
+              <button class="proj-msg-icon-btn" title="点赞" onclick="showToast('已反馈 👍')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></button>
+              <button class="proj-msg-icon-btn" title="踩" onclick="showToast('已反馈 👎')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg></button>
+              <button class="proj-msg-icon-btn" title="复制" onclick="showToast('已复制 ✓')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+              <button class="proj-msg-icon-btn" title="重新生成" onclick="showToast('重新生成中…')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.57"/></svg></button>
+            </div>
+            <!-- 任务反馈卡片 -->
+            <div class="proj-feedback-card">
+              <div class="proj-feedback-title">📋 任务反馈</div>
+              <div class="proj-feedback-sub">你对这次任务的结果满意吗</div>
+              <div class="proj-feedback-btns">
+                <button class="proj-feedback-btn" onclick="showToast('感谢反馈！')">😄 满意</button>
+                <button class="proj-feedback-btn" onclick="showToast('感谢反馈！')">😐 一般</button>
+                <button class="proj-feedback-btn" onclick="showToast('感谢反馈！')">😤 不满意</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output type chips -->
+        <div class="proj-output-types">
+          <button class="proj-output-chip" onclick="showToast('文档模式')">📄 文档</button>
+          <button class="proj-output-chip" onclick="showToast('PPT模式')">📊 PPT</button>
+          <button class="proj-output-chip" onclick="showToast('图片模式')">🖼️ 图片</button>
+          <button class="proj-output-chip" onclick="showToast('表格模式')">📋 表格</button>
+          <button class="proj-output-chip" onclick="showToast('网站模式')">🌐 网站</button>
+          <button class="proj-output-chip" onclick="showToast('视频模式')">🎬 视频</button>
+          <button class="proj-output-chip" onclick="showToast('播客模式')">🎙️ 播客</button>
+        </div>
+
+        <!-- Input area -->
+        <div class="proj-input-wrap">
+          <div class="proj-input-box">
+            <textarea class="proj-input-ta" rows="2" placeholder="输入你的需求，我将选用合适工具、Agent并交付最终内容…"></textarea>
+            <div class="proj-input-actions">
+              <div class="proj-input-left">
+                <button class="proj-input-attach" onclick="showToast('添加附件')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <button class="proj-tool-btn" onclick="showToast('工具选择')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  工具
+                </button>
+              </div>
+              <button class="proj-mode-btn" style="margin-left:auto;margin-right:6px">专业模式 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:2px"><polyline points="6 9 12 15 18 9"/></svg></button>
+              <button class="proj-send-btn" onclick="showToast('发送中…')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:11px;color:var(--text-4);margin-top:6px">Skywork 产生的内容可能有误，请注意核查。</div>
+        </div>
+      </div>
+
+      <!-- Right icon rail -->
+      <div class="proj-right-rail">
+        <button class="proj-rail-btn" onclick="showToast('折叠面板')" title="折叠">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 3 12 9 6"/></svg>
+        </button>
+        <div class="proj-rail-sep"></div>
+        <button class="proj-rail-btn" onclick="showToast('对话记录')" title="对话记录">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="proj-rail-count">0/0</span>
+        </button>
+        <button class="proj-rail-btn" onclick="showToast('输出物')" title="输出物">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span class="proj-rail-count">7</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -676,8 +949,31 @@ html{height:100%}body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 <script>
 const existingWsNames=['自媒体工作台'];
 function switchView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.ws-nav-item').forEach(n=>n.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='view-new-ws')document.getElementById('nav-new-ws').classList.add('active');else if(id==='view-filled-ws')document.getElementById('nav-filled-ws').classList.add('active');}
-function launchProject(wsName,taskText){const projName=taskText?taskText.slice(0,18)+(taskText.length>18?'…':''):'新任务';document.getElementById('breadcrumb-ws-name').textContent=wsName;document.getElementById('breadcrumb-proj-name').textContent=projName;document.getElementById('view-project')._fromView=wsName==='自媒体工作台'?'view-filled-ws':'view-new-ws';document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-project').classList.add('active');}
-function backToWorkspace(){switchView(document.getElementById('view-project')._fromView||'view-filled-ws');}
+function launchProject(wsName,taskText){
+  const projName=taskText?taskText.slice(0,20)+(taskText.length>20?'…':''):'新任务';
+  const fromView=wsName==='自媒体工作台'?'view-filled-ws':'view-new-ws';
+  document.getElementById('view-project')._fromView=fromView;
+  // Update proj sidebar breadcrumb
+  const wsBtn=document.getElementById('proj-breadcrumb-ws');
+  const nameEl=document.getElementById('proj-breadcrumb-name');
+  if(wsBtn) wsBtn.textContent=wsName;
+  if(nameEl) nameEl.textContent=projName;
+  // Hide global sidebar, show project view
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.ws-nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.sidebar').style.display='none';
+  document.getElementById('view-project').classList.add('active');
+}
+function launchProjectFromList(item){
+  const nameEl=item.querySelector('.proj-name');
+  const projName=nameEl?nameEl.textContent:'项目详情';
+  launchProject('自媒体工作台',projName);
+}
+function backToWorkspace(){
+  // Restore global sidebar
+  document.querySelector('.sidebar').style.display='';
+  switchView(document.getElementById('view-project')._fromView||'view-filled-ws');
+}
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});});
@@ -703,7 +999,7 @@ function confirmDeleteWorkspace(){closeModal('modal-ws-delete');document.getElem
 function toggleWsMenu(e){e.stopPropagation();document.getElementById('ws-options-menu').classList.toggle('open');}
 function closeWsMenu(){const m=document.getElementById('ws-options-menu');if(m)m.classList.remove('open');}
 document.addEventListener('click',()=>closeWsMenu());
-function saveInstr(){closeModal('modal-instr');showToast('指令已保存 ✓');}
+function saveInstr(){const ta=document.getElementById('instr-textarea');const txt=ta?ta.value.trim():'';if(txt){const el=document.querySelector('.instr-text');if(el)el.textContent=txt;}closeModal('modal-instr');showToast('指令已保存 ✓');}
 function doFileUpload(){closeModal('modal-file');showToast('文件上传成功 ✓');}
 function saveCron(){const n=document.getElementById('cron-name-input').value.trim();if(!n){closeModal('modal-cron');return;}closeModal('modal-cron');showToast('定时任务已创建 ✓');document.getElementById('cron-name-input').value='';}
 function launchCronDetail(name){document.getElementById('cron-detail-name').textContent=name;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-cron-detail').classList.add('active');}
@@ -732,12 +1028,184 @@ function switchNewWsTab(panelId){
   if(panelId==='new-tab-projects')tabs[0].classList.add('active');else tabs[1].classList.add('active');
 }
 function switchOutFilter(el){
-  document.querySelectorAll('.out-filter').forEach(f=>f.classList.remove('active'));el.classList.add('active');
-  const emptyEl=document.getElementById('out-empty-filter'),listEl=document.getElementById('out-list');
-  if(el.textContent==='图片'){if(emptyEl)emptyEl.style.display='block';if(listEl)listEl.style.display='none';}
-  else{if(emptyEl)emptyEl.style.display='none';if(listEl)listEl.style.display='block';}
+  document.querySelectorAll('.out-filter').forEach(f=>f.classList.remove('active'));
+  el.classList.add('active');
+  const emptyEl=document.getElementById('out-empty-filter');
+  const listEl=document.getElementById('out-list');
+  const filterText=el.textContent.trim();
+  // First remove all restore buttons
+  document.querySelectorAll('.restore-btn').forEach(b=>b.remove());
+
+  if(filterText==='已隐藏'){
+    // Show only hidden items
+    if(listEl){
+      Array.from(listEl.children).forEach(item=>{
+        if(item.classList.contains('hidden-item')){
+          item.style.display='flex';
+          item.style.opacity='0.6';
+          // add restore btn
+          if(!item.querySelector('.restore-btn')){
+            const btn=document.createElement('button');
+            btn.className='restore-btn';
+            btn.style.cssText='font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--brand-blue);color:var(--brand-blue);background:transparent;cursor:pointer;margin-right:6px;white-space:nowrap;flex-shrink:0';
+            btn.textContent='恢复';
+            btn.onclick=(e)=>{e.stopPropagation();restoreOutputItem(item);};
+            const opCol=item.querySelector('.out-col-op');
+            if(opCol) opCol.prepend(btn);
+          }
+        } else {
+          item.style.display='none';
+        }
+      });
+    }
+    if(emptyEl) emptyEl.style.display='none';
+  } else if(filterText==='图片'){
+    if(emptyEl) emptyEl.style.display='block';
+    if(listEl) listEl.style.display='none';
+  } else {
+    // Show all visible (non-hidden) items
+    if(listEl){
+      listEl.style.display='block';
+      Array.from(listEl.children).forEach(item=>{
+        if(item.classList.contains('hidden-item')){
+          item.style.display='none';
+        } else {
+          item.style.display='flex';
+          item.style.opacity='1';
+        }
+      });
+    }
+    if(emptyEl) emptyEl.style.display='none';
+  }
 }
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// ── Upload card ──
+function toggleUploadCard(e, btn){
+  e.stopPropagation();
+  const card = btn.nextElementSibling;
+  const isOpen = card.classList.contains('open');
+  closeUploadCard();
+  if(!isOpen) card.classList.add('open');
+}
+function closeUploadCard(){document.querySelectorAll('.upload-card.open').forEach(c=>c.classList.remove('open'));}
+document.addEventListener('click', ()=>closeUploadCard());
+function doFileUpload(src){closeUploadCard();showToast((src||'文件')+'上传成功 ✓');}
+
+// ── Instruction modal prefill ──
+function openInstr(){
+  const ta = document.getElementById('instr-textarea');
+  const existing = document.querySelector('.instr-text');
+  if(ta && existing) ta.value = existing.textContent.trim();
+  openModal('modal-instr');
+}
+
+// ── Memory modal: step2 readonly + 编辑按钮 → step3 输入框 ──
+function memShowInput(){
+  document.getElementById('mem-footer-readonly').style.display='none';
+  document.getElementById('mem-footer-edit').style.display='block';
+  setTimeout(()=>{const ta=document.getElementById('mem-modal-input');if(ta)ta.focus();},50);
+}
+function memResetToReadonly(){
+  const ro=document.getElementById('mem-footer-readonly');
+  const ed=document.getElementById('mem-footer-edit');
+  if(ro) ro.style.display='flex';
+  if(ed) ed.style.display='none';
+  const ta=document.getElementById('mem-modal-input');
+  if(ta) ta.value='';
+}
+function submitMemModal(){
+  const ta=document.getElementById('mem-modal-input');
+  if(!ta||!ta.value.trim()) return;
+  ta.value='';
+  closeModal('modal-memory');
+  memResetToReadonly();
+  showToast('已告知 Agent，Memory 将自动更新 ✓');
+}
+
+// ── Hide / show outputs ──
+let hiddenCount = 0;
+function hideOutputItem(menuItem){
+  const item = menuItem.closest('.out-item');
+  if(!item) return;
+  item.classList.add('hidden-item');
+  item.style.display='none';
+  hiddenCount++;
+  // Show 已隐藏 filter option
+  const hiddenBtn = document.getElementById('hidden-filter-btn');
+  if(hiddenBtn) hiddenBtn.style.display='inline-block';
+  showToast('已隐藏');
+}
+function restoreOutputItem(item){
+  item.classList.remove('hidden-item');
+  item.style.display='flex';
+  item.style.opacity='1';
+  const rb = item.querySelector('.restore-btn');
+  if(rb) rb.remove();
+  hiddenCount = Math.max(0,hiddenCount-1);
+  if(hiddenCount===0){
+    const hiddenBtn=document.getElementById('hidden-filter-btn');
+    if(hiddenBtn){ hiddenBtn.style.display='none'; }
+    // switch back to 全部
+    const allBtn = document.querySelector('.out-filter');
+    if(allBtn) switchOutFilter(allBtn);
+  }
+  showToast('已恢复显示');
+}
+
+// ── Output preview sheet ──
+function openPreview(item){
+  if(!item) return;
+  const name = item.getAttribute('data-name') || '文件预览';
+  const titleEl = document.getElementById('preview-title');
+  if(titleEl) titleEl.textContent = name;
+  const sheet = document.getElementById('preview-sheet');
+  if(sheet){ sheet.classList.add('open'); }
+}
+function closePreview(){
+  const sheet = document.getElementById('preview-sheet');
+  if(sheet) sheet.classList.remove('open');
+}
 </script>
+
+<!-- Output preview sheet -->
+<div class="preview-sheet" id="preview-sheet">
+  <div class="preview-sheet-backdrop" onclick="closePreview()"></div>
+  <div class="preview-sheet-box">
+    <div class="preview-sheet-header">
+      <div>
+        <div class="preview-sheet-title" id="preview-title">账号策划案 v1.docx</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn-primary" style="font-size:12px;padding:5px 14px" onclick="showToast('下载中…')">下载</button>
+        <button class="preview-sheet-close" onclick="closePreview()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+    </div>
+    <div class="preview-sheet-body">
+      <div class="preview-sheet-meta">
+        <span>自媒体运营 · 今天</span>
+        <span>docx · 42KB</span>
+      </div>
+      <div class="preview-content" id="preview-body">
+        <h2>账号策划案 v1</h2>
+        <p>本策划案围绕小红书护肤赛道成分党内容方向，结合账号定位与用户需求，制定系统性运营规划。</p>
+        <h2>一、账号定位</h2>
+        <p>定位为专业成分党测评账号，聚焦护肤成分科普与产品深度测评，目标用户为 18-35 岁注重成分安全与功效的女性用户。</p>
+        <h2>二、内容方向</h2>
+        <ul>
+          <li>成分解读类：常见功效成分科普（烟酰胺、视黄醇、水杨酸等）</li>
+          <li>产品测评类：同类产品成分对比分析</li>
+          <li>行业洞察类：国际大牌与国货配方对比</li>
+          <li>用户答疑类：粉丝成分相关问题解答</li>
+        </ul>
+        <h2>三、发布计划</h2>
+        <p>每周发布 3 篇，时间节点定为周二、周四、周六。图文为主要形式，不出镜，以专业感构建账号人设。</p>
+        <h2>四、竞品参考</h2>
+        <p>重点关注成分党头部账号动态，分析其选题策略与互动模式，提炼可复用的内容框架。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
